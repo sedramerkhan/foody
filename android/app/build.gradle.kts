@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.sm.foody"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // NDK version will be automatically handled by Flutter
+    // ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

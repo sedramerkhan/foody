@@ -1,0 +1,16 @@
+{
+  "@@locale": "ar",
+  "signInWelcomeBack": "مرحباً بعودتك",
+  "signInSignInToContinue": "قم بتسجيل الدخول للمتابعة",
+  "signInUsername": "اسم المستخدم",
+  "signInPassword": "كلمة المرور",
+  "signInEnterYourUsername": "أدخل اسم المستخدم",
+  "signInEnterYourPassword": "أدخل كلمة المرور",
+  "signInSignIn": "تسجيل الدخول",
+  "homeHome": "الرئيسية",
+  "homeWelcome": "مرحباً!",
+  "homeYouHaveSuccessfullySignedIn": "لقد قمت بتسجيل الدخول بنجاح.",
+  "homeSignOut": "تسجيل الخروج",
+  "commonThisFieldIsRequired": "هذا الحقل مطلوب",
+  "commonPasswordMustBeAtLeast8Characters": "يجب أن تكون كلمة المرور 8 أحرف على الأقل"
+}

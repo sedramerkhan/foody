@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foody/shared/widgets/text_field/validation/text_field_validators.dart';
 
 /// Configuration class for AppTextField that separates behavior from styling.
 /// 
@@ -148,6 +149,7 @@ class AppTextFieldConfig {
     bool isRequired = true,
     String? Function(String?)? validator,
     Function(String)? onChanged,
+    Function(String)? onSubmitted,
     FocusNode? focusNode,
     bool showErrorText = true,
   }) {
@@ -155,8 +157,9 @@ class AppTextFieldConfig {
       hintText: hintText,
       isRequired: isRequired,
       obscureText: true,
-      validator: validator,
+      validator: validator ?? Validators.password,
       onChanged: onChanged,
+      onSubmitted: onSubmitted,
       textInputAction: TextInputAction.done,
       enableSuggestions: false,
       autocorrect: false,

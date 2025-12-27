@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "signInWelcomeBack": "Welcome Back",
+  "signInSignInToContinue": "Sign in to continue",
+  "signInUsername": "Username",
+  "signInPassword": "Password",
+  "signInEnterYourUsername": "Enter your username",
+  "signInEnterYourPassword": "Enter your password",
+  "signInSignIn": "Sign In",
+  "homeHome": "Home",
+  "homeWelcome": "Welcome!",
+  "homeYouHaveSuccessfullySignedIn": "You have successfully signed in.",
+  "homeSignOut": "Sign Out",
+  "commonThisFieldIsRequired": "This field is required",
+  "commonPasswordMustBeAtLeast8Characters": "Password must be at least 8 characters"
+}

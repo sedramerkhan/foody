@@ -21,7 +21,7 @@
 .fvmrc
 
 
-# Generated file for assets and intl
+# Generated localization files
 lib/l10n/generated/**
 lib/generated/**
 

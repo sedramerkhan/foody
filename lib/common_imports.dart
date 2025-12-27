@@ -106,6 +106,19 @@ export 'package:foody/core/data/remote/network/connection_info.dart';
 export 'package:foody/core/config/config.dart';
 export 'package:foody/core/config/hive_init.dart';
 
+// Routing
+export 'package:foody/core/routing/routes.dart';
+
+// Localizations
+export 'package:foody/l10n/generated/app_localizations.dart';
+export 'package:foody/l10n/app_localizations_extension.dart';
+
+// Navigation
+export 'package:foody/shared/utils/navigation/navigation.dart';
+
+// State Management
+export 'package:provider/provider.dart';
+
 // Services
 export 'package:foody/shared/services/package_info_service.dart';
 
