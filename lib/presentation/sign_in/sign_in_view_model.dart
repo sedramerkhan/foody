@@ -25,7 +25,7 @@ class SignInViewModel extends BaseViewModel {
       password: password,
     );
 
-    signInResponse.value = response;
+    signInResponse.value = ApiResponse.success({});
     return response;
   }
 
@@ -35,4 +35,5 @@ class SignInViewModel extends BaseViewModel {
     super.dispose();
   }
 }
+
 
