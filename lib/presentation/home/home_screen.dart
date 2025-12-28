@@ -5,12 +5,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = S.current;
     
     return Scaffold(
       appBar: AppBar(
         title: AppText(
-          "sdf",
+          l10n.homeHome,
           typography: AppTypography.headingMediumBold,
           color: AppColors.textPrimary,
         ),

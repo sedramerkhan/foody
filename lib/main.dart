@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:foody/common_imports.dart';
 import 'package:foody/core/routing/app_router.dart';
 import 'package:foody/core/routing/navigator_key.dart';
-import 'package:foody/core/theme/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,12 +43,12 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: AppRouter.generateRoute,
       locale: const Locale('en'), // or dynamic
       localizationsDelegates: const [
-        AppLocalizations.delegate,
+        S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: AppLocalizations.supportedLocales,
+      supportedLocales: S.delegate.supportedLocales,
     );
   }
 }

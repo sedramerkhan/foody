@@ -37,8 +37,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Can be used without context - uses global navigator key internally
-    final l10n = AppLocalizations.of(context)!;
+    // Can be used without context - uses S.current
+    final l10n = S.current;
     final viewModel = Provider.of<SignInViewModel>(context);
 
     // Listen to sign-in response changes

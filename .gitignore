@@ -24,6 +24,8 @@
 # Generated localization files
 lib/l10n/generated/**
 lib/generated/**
+lib/l10n/intl/**
+lib/l10n/l10n.dart
 
 
 # Visual Studio Code related

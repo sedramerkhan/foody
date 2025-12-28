@@ -104,13 +104,15 @@ dev_dependencies:
   ## Hive
   hive_ce_generator: 1.9.5
 
+  ## Intl Utils for localization code generation
+  intl_utils: 2.8.13
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
