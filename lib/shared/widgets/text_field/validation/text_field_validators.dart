@@ -104,6 +104,23 @@ class Validators {
     return null;
   }
 
+  /// Validates password with custom localized messages
+  /// Checks for required field and minimum length (8 characters)
+  static String? Function(String?) passwordWithMessages({
+    required String requiredMessage,
+    required String minLengthMessage,
+  }) {
+    return (String? value) {
+      if (value == null || value.trim().isEmpty) {
+        return requiredMessage;
+      }
+      if (value.length < 8) {
+        return minLengthMessage;
+      }
+      return null;
+    };
+  }
+
   /// Validates strong password (letters, numbers, and special characters)
   static String? strongPassword(String? value) {
     if (value == null || value.isEmpty) return null;

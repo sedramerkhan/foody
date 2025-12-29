@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foody/core/theme/color/app_colors.dart';
+import 'package:foody/shared/utils/auto_layout/screen_utils.dart';
 
 /// Visual styling configuration for ClickableContainer.
 /// 
@@ -39,7 +40,7 @@ class ClickableContainerStyle {
       color: color,
       rippleColor: rippleColor,
       padding: padding,
-      borderRadius: borderRadius,
+      borderRadius: borderRadius ?? BorderRadius.circular(8.r),
       withShadows: false,
     );
   }

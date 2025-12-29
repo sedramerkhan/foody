@@ -12,14 +12,17 @@ import 'app_button_style.dart';
 /// Example:
 /// ```dart
 /// AppButton(
-///   child: Text('Click me'),
+///   text: 'Click me',
 ///   config: AppButtonConfig.enabled(onPressed: () => print('Clicked')),
 ///   style: AppButtonStyle.primary(),
 /// )
 /// ```
 class AppButton extends StatelessWidget {
-  /// The content/widget to display in the button
-  final Widget child;
+  /// The text to display on the button (if provided, child is ignored)
+  final String? text;
+
+  /// The content/widget to display in the button (used if text is not provided)
+  final Widget? child;
 
   /// Configuration for behavior (callbacks, loading state, etc.)
   final AppButtonConfig config;
@@ -32,28 +35,68 @@ class AppButton extends StatelessWidget {
 
   const AppButton({
     super.key,
-    required this.child,
+    this.text,
+    this.child,
     required this.config,
     this.style,
     this.expandWidth = false,
-  });
+  }) : assert(text != null || child != null, 'Either text or child must be provided');
 
   @override
   Widget build(BuildContext context) {
     final buttonStyle = style ?? AppButtonStyle.primary();
     final isDisabled = !config.canPress;
+    final buttonChild = _buildButtonChild(buttonStyle, isDisabled);
 
+    // If gradient is provided and button is enabled, use gradient decoration
+    if (buttonStyle.gradient != null && !isDisabled) {
+      return SizedBox(
+        width: config.width ?? (expandWidth ? double.infinity : null),
+        height: config.height ?? 48.h,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: buttonStyle.gradient,
+            borderRadius: BorderRadius.circular(buttonStyle.borderRadius),
+          ),
+          child: ElevatedButton(
+            onPressed: config.canPress ? config.onPressed : null,
+            style: buttonStyle.toButtonStyle(isDisabled: isDisabled).copyWith(
+              backgroundColor: WidgetStateProperty.all(Colors.transparent),
+              shadowColor: WidgetStateProperty.all(Colors.transparent),
+            ),
+            child: buttonChild,
+          ),
+        ),
+      );
+    }
+
+    // Default behavior - solid color (no gradient)
     return SizedBox(
       width: config.width ?? (expandWidth ? double.infinity : null),
       height: config.height ?? 48.h,
       child: ElevatedButton(
         onPressed: config.canPress ? config.onPressed : null,
         style: buttonStyle.toButtonStyle(isDisabled: isDisabled),
-        child: config.isLoading
-            ? _buildLoadingIndicator(buttonStyle, isDisabled)
-            : child,
+        child: buttonChild,
       ),
     );
+  }
+
+  Widget _buildButtonChild(AppButtonStyle buttonStyle, bool isDisabled) {
+    if (config.isLoading) {
+      return _buildLoadingIndicator(buttonStyle, isDisabled);
+    }
+
+    // If text is provided, use it with the style's textStyle
+    if (text != null) {
+      return Text(
+        text!,
+        style: buttonStyle.textStyle,
+      );
+    }
+
+    // Otherwise use the provided child
+    return child!;
   }
 
   Widget _buildLoadingIndicator(AppButtonStyle buttonStyle, bool isDisabled) {

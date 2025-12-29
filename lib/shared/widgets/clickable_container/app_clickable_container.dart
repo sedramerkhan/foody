@@ -42,7 +42,7 @@ class AppClickableContainer extends StatelessWidget {
     final containerStyle = style ?? ClickableContainerStyle.standard();
     final rippleColor = containerStyle.rippleColor ??
         (config.isClickable
-            ? AppColors.grey100.withValues(alpha: 0.8)
+            ? AppColors.grey100.withValues(alpha: 0.9)
             : null);
 
     return Container(

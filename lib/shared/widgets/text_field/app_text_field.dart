@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foody/common_imports.dart';
 import 'package:foody/core/config/config.dart';
 import 'package:foody/shared/utils/auto_layout/screen_utils.dart';
 import 'app_text_field_config.dart';
@@ -6,11 +7,11 @@ import 'app_text_field_style.dart';
 import 'validation/text_field_validators.dart';
 
 /// A simplified, flexible text field widget that separates configuration from styling.
-/// 
+///
 /// This widget provides a clean API for creating text fields with consistent
 /// behavior while allowing full customization through [AppTextFieldConfig] and
 /// [AppTextFieldStyle].
-/// 
+///
 /// Example:
 /// ```dart
 /// AppTextField(
@@ -112,16 +113,20 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
           ),
         ),
-        if (widget.config.showErrorText && _errorMessage != null) ...[
-          SizedBox(height: 4.h),
-          Text(
-            _errorMessage!,
-            style: TextStyle(
-              color: _style.borderColors?.error,
-              fontSize: 12,
-            ),
+        SizedBox(
+          height: 14.h,
+          child: Column(
+            children: [
+              if (widget.config.showErrorText && _errorMessage != null) ...[
+                AppText(
+                  _errorMessage!,
+                  color: AppColors.textError,
+                  typography: AppTypography.bodyXSmallMedium,
+                ),
+              ],
+            ],
           ),
-        ],
+        ),
       ],
     );
   }
@@ -143,7 +148,8 @@ class _AppTextFieldState extends State<AppTextField> {
     final hasError = _errorMessage != null;
     final isDisabled = !widget.config.enabled;
 
-    final borderColor = _style.borderColors?.getColor(
+    final borderColor =
+        _style.borderColors?.getColor(
           isEmpty: isEmpty,
           isFocused: isFocused,
           hasError: hasError,
@@ -242,4 +248,3 @@ class _AppTextFieldState extends State<AppTextField> {
     return Validators.compose(validators);
   }
 }
-

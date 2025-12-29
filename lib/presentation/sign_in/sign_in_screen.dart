@@ -1,5 +1,8 @@
 import 'package:foody/common_imports.dart';
 import 'package:foody/presentation/sign_in/sign_in_view_model.dart';
+import 'package:foody/shared/widgets/text_field/validation/text_field_validators.dart';
+import 'package:foody/presentation/sign_in/widgets/sign_in_gradient_header.dart';
+import 'package:foody/presentation/sign_in/widgets/sign_in_form_card.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -13,6 +16,18 @@ class _SignInScreenState extends State<SignInScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   ApiResponse<Map<String, dynamic>>? _lastResponse;
+  late final String? Function(String?) _passwordValidator;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize password validator with localized messages
+    final l10n = S.current;
+    _passwordValidator = Validators.passwordWithMessages(
+      requiredMessage: l10n.commonThisFieldIsRequired,
+      minLengthMessage: l10n.commonPasswordMustBeAtLeast8Characters,
+    );
+  }
 
   @override
   void dispose() {
@@ -24,16 +39,17 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<void> _handleSignIn(SignInViewModel viewModel) async {
     if (_formKey.currentState?.validate() ?? false) {
-     final result = await viewModel.signIn(
+      final result = await viewModel.signIn(
         username: _usernameController.text.trim(),
         password: _passwordController.text,
       );
 
-     ApiResponseHandler.handle(context: context, result: result, onSuccess: (_){
-       NavigationUtils.pushReplacementNamed(context, Routes.main);
-     });
+      ApiResponseHandler.handle(context: context, result: result, onSuccess: (_){
+        NavigationUtils.pushReplacementNamed(context, Routes.main);
+      });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,72 +65,28 @@ class _SignInScreenState extends State<SignInScreen> {
         return IgnorePointer(
           ignoring: isLoading,
           child: Scaffold(
+            resizeToAvoidBottomInset: true,
             body: SafeArea(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GapH(40.h),
-                      // Title
-                      AppText(
-                        l10n.signInWelcomeBack,
-                        typography: AppTypography.headingLargeBold,
-                        color: AppColors.textPrimary,
-                        textAlign: TextAlign.center,
-                      ),
-                      GapH(8.h),
-                      AppText(
-                        l10n.signInSignInToContinue,
-                        typography: AppTypography.bodyLargeRegular,
-                        color: AppColors.textSecondaryAlt,
-                        textAlign: TextAlign.center,
-                      ),
-                      GapH(48.h),
-                      // Username field
-                      LabeledTextField(
-                        label: l10n.signInUsername,
-                        controller: _usernameController,
-                        config: AppTextFieldConfig.standard(
-                          hintText: l10n.signInEnterYourUsername,
-                          isRequired: true,
-                          validator: (value) => value == null || value.trim().isEmpty
-                              ? l10n.commonThisFieldIsRequired
-                              : null,
-                          textInputAction: TextInputAction.next,
-                        ),
-                      ),
-                      GapH(24.h),
-                      // Password field
-                      LabeledTextField(
-                        label: l10n.signInPassword,
-                        controller: _passwordController,
-                        config: AppTextFieldConfig.password(
-                          hintText: l10n.signInEnterYourPassword,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return l10n.commonThisFieldIsRequired;
-                            }
-                            if (value.length < 8) {
-                              return l10n.commonPasswordMustBeAtLeast8Characters;
-                            }
-                            return null;
-                          },
-                          onSubmitted: (value) => _handleSignIn(viewModel),
-                        ),
-                      ),
-                      GapH(40.h),
-                      // Sign in button
-                      PrimaryButton(
-                        text: l10n.signInSignIn,
-                        onPressed: isLoading ? null : () => _handleSignIn(viewModel),
-                        isLoading: isLoading,
-                      ),
-                    ],
+              bottom: false,
+              child: Stack(
+                children: [
+                  const SignInGradientHeader(),
+                  SignInFormCard(
+                    formKey: _formKey,
+                    usernameController: _usernameController,
+                    passwordController: _passwordController,
+                    passwordValidator: _passwordValidator,
+                    viewModel: viewModel,
+                    isLoading: isLoading,
+                    onSignIn: () => _handleSignIn(viewModel),
+                    onForgotPassword: () {
+                      // TODO: Navigate to forgot password screen
+                    },
+                    onSignUp: () {
+                      // TODO: Navigate to sign up screen
+                    },
                   ),
-                ),
+                ],
               ),
             ),
           ),

@@ -19,6 +19,7 @@ class AppButtonStyle {
   final EdgeInsets? padding;
   final double borderRadius;
   final double? elevation;
+  final Gradient? gradient;
 
   const AppButtonStyle({
     required this.textStyle,
@@ -31,6 +32,7 @@ class AppButtonStyle {
     this.padding,
     this.borderRadius = 12.0,
     this.elevation = 0,
+    this.gradient,
   });
 
   /// Factory constructor for primary button style
@@ -143,6 +145,33 @@ class AppButtonStyle {
     );
   }
 
+  /// Factory constructor for gradient primary button style
+  factory AppButtonStyle.gradientPrimary() {
+    return AppButtonStyle(
+      textStyle: ThemeTextStyle.fromTypography(
+        typography: AppTypography.bodyLargeMedium,
+        color: Colors.white,
+      ).materialTextStyle.copyWith(
+        fontWeight: FontWeight.bold,
+      ),
+      backgroundColor: AppColors.buttonBrand,
+      foregroundColor: Colors.white,
+      borderColor: Colors.transparent,
+      hoverColor: Colors.white.withValues(alpha: 0.2),
+      disabledBackgroundColor: AppColors.buttonDisabled,
+      disabledForegroundColor: AppColors.buttonLabelDisabled,
+      borderRadius: 25.0,
+      gradient: LinearGradient(
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: [
+          AppColors.brand500,
+          AppColors.brand700,
+        ],
+      ),
+    );
+  }
+
   /// Convert to Flutter's ButtonStyle
   ButtonStyle toButtonStyle({bool isDisabled = false}) {
     final bgColor = isDisabled && disabledBackgroundColor != null
@@ -179,6 +208,7 @@ class AppButtonStyle {
     EdgeInsets? padding,
     double? borderRadius,
     double? elevation,
+    Gradient? gradient,
   }) {
     return AppButtonStyle(
       textStyle: textStyle ?? this.textStyle,
@@ -191,6 +221,7 @@ class AppButtonStyle {
       padding: padding ?? this.padding,
       borderRadius: borderRadius ?? this.borderRadius,
       elevation: elevation ?? this.elevation,
+      gradient: gradient ?? this.gradient,
     );
   }
 }
