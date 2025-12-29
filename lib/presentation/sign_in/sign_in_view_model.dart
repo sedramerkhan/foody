@@ -26,7 +26,7 @@ class SignInViewModel extends BaseViewModel {
     );
 
     signInResponse.value = ApiResponse.success({});
-    return response;
+    return signInResponse.value;
   }
 
   @override

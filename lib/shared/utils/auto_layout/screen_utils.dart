@@ -27,4 +27,6 @@ extension ScreenUtilExtensions on num {
   double get h => ScreenUtil.setHeight(toDouble());
 
   double get sp => ScreenUtil.setTextSize(toDouble());
+
+  double get r => ScreenUtil.setWidth(toDouble()); // For border radius
 }

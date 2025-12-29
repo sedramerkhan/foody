@@ -30,7 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
       );
 
      ApiResponseHandler.handle(context: context, result: result, onSuccess: (_){
-       NavigationUtils.pushReplacementNamed(context, Routes.home);
+       NavigationUtils.pushReplacementNamed(context, Routes.main);
      });
     }
   }

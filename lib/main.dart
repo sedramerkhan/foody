@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:foody/common_imports.dart';
+import 'package:foody/core/di/di.dart';
 import 'package:foody/core/routing/app_router.dart';
 import 'package:foody/core/routing/navigator_key.dart';
 
@@ -25,6 +26,9 @@ Future<void> main() async {
   // Use Custom Error Widget for Unhandled Exception to be nice screen not a Red screen
   ErrorWidget.builder = (FlutterErrorDetails details) =>
       Center(child: Text(details.toString()));
+
+
+  registerSingleton();
 
   runApp(const MyApp());
 }

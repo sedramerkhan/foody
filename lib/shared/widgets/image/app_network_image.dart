@@ -118,19 +118,33 @@ class _AppNetworkImageState extends State<AppNetworkImage> {
       return;
     }
 
-    _imageState.value = ImageState.loading;
+    if (!mounted) return;
+    _safeSetImageState(ImageState.loading);
     try {
       final uri = Uri.tryParse(url);
       if (uri != null && uri.hasAbsolutePath) {
         final response = await http.head(uri);
+        if (!mounted) return;
         _hasValidatedUrl = true;
-        _imageState.value =
-            response.statusCode == 200 ? ImageState.success : ImageState.error;
+        _safeSetImageState(
+            response.statusCode == 200 ? ImageState.success : ImageState.error);
       } else {
-        _imageState.value = ImageState.error;
+        if (!mounted) return;
+        _safeSetImageState(ImageState.error);
       }
     } catch (e) {
-      _imageState.value = ImageState.error;
+      if (!mounted) return;
+      _safeSetImageState(ImageState.error);
+    }
+  }
+
+  void _safeSetImageState(ImageState state) {
+    if (mounted) {
+      try {
+        _imageState.value = state;
+      } catch (_) {
+        // ValueNotifier was disposed, ignore silently
+      }
     }
   }
 

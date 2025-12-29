@@ -1,60 +1,78 @@
 import 'package:foody/common_imports.dart';
+import 'package:foody/data/model/restaurant/restaurant.dart';
+import 'package:foody/presentation/home/home_view_model.dart';
+import 'package:foody/shared/widgets/cart/cart_icon_button.dart';
+import 'package:foody/presentation/home/widgets/home_loading_state.dart';
+import 'package:foody/presentation/home/widgets/home_restaurant_list.dart';
+import 'package:foody/presentation/home/widgets/home_error_state.dart';
+import 'package:foody/presentation/home/widgets/home_empty_state.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Loading is now handled by MainScreen
+  }
+
+  void _navigateToMenu(Restaurant restaurant) {
+    NavigationUtils.pushNamed(
+      context,
+      Routes.menu,
+      arguments: {'restaurant': restaurant},
+    );
+  }
+
+  void _navigateToCart() {
+    // TODO: Navigate to cart screen when implemented
+    // NavigationUtils.pushNamed(context, Routes.cart);
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = S.current;
-    
+    final viewModel = Provider.of<HomeViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: AppText(
-          l10n.homeHome,
+          'Restaurants',
           typography: AppTypography.headingMediumBold,
           color: AppColors.textPrimary,
         ),
         backgroundColor: AppColors.bgSurface,
         elevation: 0,
         actions: [
-          TextButton(
-            onPressed: () {
-              // TODO: Implement sign out
-              Navigator.of(context).pushReplacementNamed(Routes.signIn);
-            },
-            child: AppText(
-              l10n.homeSignOut,
-              typography: AppTypography.bodyMediumMedium,
-              color: AppColors.textBrand,
-            ),
+          CartIconButton(
+            itemCount: null, // TODO: Get from cart state
+            onTap: _navigateToCart,
           ),
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(24.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              GapH(32.h),
-              AppText(
-                l10n.homeWelcome,
-                typography: AppTypography.headingLargeBold,
-                color: AppColors.textPrimary,
-                textAlign: TextAlign.center,
-              ),
-              GapH(16.h),
-              AppText(
-                l10n.homeYouHaveSuccessfullySignedIn,
-                typography: AppTypography.bodyLargeRegular,
-                color: AppColors.textSecondaryAlt,
-                textAlign: TextAlign.center,
-              ),
-            ],
+        child: ApiResponseBuilder<List<Restaurant>>(
+          apiResponse: viewModel.restaurantsResponse,
+          loading: const HomeLoadingState(),
+          onSuccess: (restaurants) => HomeRestaurantList(
+            restaurants: restaurants,
+            onRestaurantTap: _navigateToMenu,
           ),
+          onError: (message) => HomeErrorState(
+            message: message,
+            viewModel: viewModel,
+          ),
+          empty: const HomeEmptyState(),
+          onTryAgain: () => viewModel.loadRestaurants(),
         ),
       ),
     );
   }
+
 }
 
