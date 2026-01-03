@@ -5,6 +5,7 @@ class MenuEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(20.w),
@@ -16,19 +17,19 @@ class MenuEmptyState extends StatelessWidget {
               size: 56.w,
               color: AppColors.iconPrimaryAlt,
             ),
-            GapH(12.h),
-            AppText(
-              'No menu items available',
-              typography: AppTypography.headingSmallBold,
-              color: AppColors.textPrimary,
-            ),
-            GapH(6.h),
-            AppText(
-              'This restaurant has no items on the menu',
-              typography: AppTypography.bodyMediumRegular,
-              color: AppColors.textSecondaryAlt,
-              textAlign: TextAlign.center,
-            ),
+                GapH(12.h),
+                AppText(
+                  l10n.menuNoMenuItemsAvailable,
+                  typography: AppTypography.headingSmallBold,
+                  color: AppColors.textPrimary,
+                ),
+                GapH(6.h),
+                AppText(
+                  l10n.menuNoItemsOnMenu,
+                  typography: AppTypography.bodyMediumRegular,
+                  color: AppColors.textSecondaryAlt,
+                  textAlign: TextAlign.center,
+                ),
           ],
         ),
       ),

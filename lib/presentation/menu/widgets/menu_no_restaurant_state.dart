@@ -5,6 +5,7 @@ class MenuNoRestaurantState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(20.w),
@@ -16,19 +17,19 @@ class MenuNoRestaurantState extends StatelessWidget {
               size: 56.w,
               color: AppColors.iconPrimaryAlt,
             ),
-            GapH(12.h),
-            AppText(
-              'No restaurant selected',
-              typography: AppTypography.headingSmallBold,
-              color: AppColors.textPrimary,
-            ),
-            GapH(6.h),
-            AppText(
-              'Please select a restaurant to view menu',
-              typography: AppTypography.bodyMediumRegular,
-              color: AppColors.textSecondaryAlt,
-              textAlign: TextAlign.center,
-            ),
+                GapH(12.h),
+                AppText(
+                  l10n.menuNoRestaurantSelected,
+                  typography: AppTypography.headingSmallBold,
+                  color: AppColors.textPrimary,
+                ),
+                GapH(6.h),
+                AppText(
+                  l10n.menuSelectRestaurantToViewMenu,
+                  typography: AppTypography.bodyMediumRegular,
+                  color: AppColors.textSecondaryAlt,
+                  textAlign: TextAlign.center,
+                ),
           ],
         ),
       ),

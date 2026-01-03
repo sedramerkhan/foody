@@ -12,11 +12,12 @@ class DeliveryTimeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppText(
-          'Estimated Delivery Time',
+          l10n.checkoutEstimatedDeliveryTime,
           typography: AppTypography.headingSmallBold,
           color: AppColors.textPrimary,
         ),
@@ -37,7 +38,7 @@ class DeliveryTimeSection extends StatelessWidget {
               GapW(12.w),
               Expanded(
                 child: AppText(
-                  '$estimatedTime minutes',
+                  l10n.checkoutMinutes(estimatedTime),
                   typography: AppTypography.bodyMediumSemiBold,
                   color: AppColors.textPrimary,
                 ),

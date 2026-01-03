@@ -31,7 +31,72 @@
   "signUpPhone": "Phone (Optional)",
   "signUpEnterYourPhone": "Enter your phone number",
   "signUpAddress": "Address (Optional)",
-  "signUpEnterYourAddress": "Enter your address"
+  "signUpEnterYourAddress": "Enter your address",
+  "homeRestaurants": "Restaurants",
+  "homeNoRestaurantsAvailable": "No restaurants available",
+  "homeCheckBackLater": "Check back later for new restaurants",
+  "homeErrorLoadingRestaurants": "Error loading restaurants",
+  "commonTryAgain": "Try Again",
+  "profileProfile": "Profile",
+  "profileLanguage": "Language",
+  "profileEnglish": "English",
+  "profileArabic": "العربية",
+  "profileAddSyrianRestaurants": "Add Syrian Restaurants",
+  "profileSyrianRestaurantsAddedSuccessfully": "Syrian restaurants added successfully!",
+  "profileFeaturesComingSoon": "Profile features coming soon...",
+  "menuMenu": "Menu",
+  "menuNoMenuItemsAvailable": "No menu items available",
+  "menuNoItemsOnMenu": "This restaurant has no items on the menu",
+  "menuErrorLoadingMenu": "Error loading menu",
+  "menuNoRestaurantSelected": "No restaurant selected",
+  "menuSelectRestaurantToViewMenu": "Please select a restaurant to view menu",
+  "menuItemAddedToCart": "{itemName} added to cart",
+  "@menuItemAddedToCart": {
+    "placeholders": {
+      "itemName": {
+        "type": "String"
+      }
+    }
+  },
+  "cartCart": "Cart",
+  "cartTotal": "Total",
+  "cartProceedToCheckout": "Proceed to Checkout",
+  "cartYourCartIsEmpty": "Your cart is empty",
+  "cartAddItemsFromMenu": "Add items from the menu to get started",
+  "checkoutCheckout": "Checkout",
+  "checkoutYourCartIsEmpty": "Your cart is empty",
+  "checkoutOrderSummary": "Order Summary",
+  "checkoutItems": "Items ({count})",
+  "@checkoutItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "checkoutDeliveryFee": "Delivery Fee",
+  "checkoutTotal": "Total",
+  "checkoutPlaceOrder": "Place Order",
+  "checkoutOrderPlacedSuccessfully": "Order placed successfully!",
+  "checkoutDeliveryAddress": "Delivery Address",
+  "checkoutAddress": "Address",
+  "checkoutEnterDeliveryAddress": "Enter your delivery address",
+  "checkoutPaymentMethod": "Payment Method",
+  "checkoutCard": "Card",
+  "checkoutPayPal": "PayPal",
+  "checkoutCashOnDelivery": "Cash on Delivery",
+  "checkoutEstimatedDeliveryTime": "Estimated Delivery Time",
+  "checkoutMinutes": "{minutes} minutes",
+  "@checkoutMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ordersOrders": "Orders",
+  "ordersComingSoon": "Orders Coming Soon",
+  "ordersOrderHistoryWillAppearHere": "Your order history will appear here"
 }
 
 

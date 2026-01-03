@@ -9,8 +9,9 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Cart'),
+      appBar: CustomAppBar(title: l10n.cartCart),
       body: Consumer<CartViewModel>(
         builder: (context, viewModel, _) {
           if (viewModel.isEmpty) {
@@ -54,7 +55,7 @@ class CartScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppText(
-                          'Total',
+                          l10n.cartTotal,
                           typography: AppTypography.headingMediumBold,
                           color: AppColors.textPrimary,
                         ),
@@ -67,7 +68,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     GapH(16.h),
                     AppButton(
-                      text: 'Proceed to Checkout',
+                      text: l10n.cartProceedToCheckout,
                       config: AppButtonConfig(
                         onPressed: () {
                           NavigationUtils.pushNamed(context, Routes.checkout);

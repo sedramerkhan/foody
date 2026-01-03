@@ -37,12 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     final viewModel = Provider.of<HomeViewModel>(context);
     final cartViewModel = Provider.of<CartViewModel>(context, listen: true);
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Restaurants',
+        title: l10n.homeRestaurants,
         actions: [
           CartIconButton(
             itemCount: cartViewModel.itemCount > 0 ? cartViewModel.itemCount : null,

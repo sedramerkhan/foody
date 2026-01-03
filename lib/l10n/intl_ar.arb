@@ -5,7 +5,6 @@
   "signInUsername": "اسم المستخدم",
   "signInEnterYourUsername": "أدخل اسم المستخدم",
   "signInPassword": "كلمة المرور",
-  "signInEnterYourUsername": "أدخل اسم المستخدم",
   "signInEnterYourPassword": "أدخل كلمة المرور",
   "signInSignIn": "تسجيل الدخول",
   "signInForgotPassword": "نسيت كلمة المرور؟",
@@ -32,6 +31,71 @@
   "signUpPhone": "الهاتف (اختياري)",
   "signUpEnterYourPhone": "أدخل رقم هاتفك",
   "signUpAddress": "العنوان (اختياري)",
-  "signUpEnterYourAddress": "أدخل عنوانك"
+  "signUpEnterYourAddress": "أدخل عنوانك",
+  "homeRestaurants": "المطاعم",
+  "homeNoRestaurantsAvailable": "لا توجد مطاعم متاحة",
+  "homeCheckBackLater": "تحقق لاحقاً للحصول على مطاعم جديدة",
+  "homeErrorLoadingRestaurants": "خطأ في تحميل المطاعم",
+  "commonTryAgain": "حاول مرة أخرى",
+  "profileProfile": "الملف الشخصي",
+  "profileLanguage": "اللغة",
+  "profileEnglish": "English",
+  "profileArabic": "العربية",
+  "profileAddSyrianRestaurants": "إضافة مطاعم سورية",
+  "profileSyrianRestaurantsAddedSuccessfully": "تم إضافة المطاعم السورية بنجاح!",
+  "profileFeaturesComingSoon": "ميزات الملف الشخصي قريباً...",
+  "menuMenu": "القائمة",
+  "menuNoMenuItemsAvailable": "لا توجد عناصر في القائمة",
+  "menuNoItemsOnMenu": "هذا المطعم لا يحتوي على عناصر في القائمة",
+  "menuErrorLoadingMenu": "خطأ في تحميل القائمة",
+  "menuNoRestaurantSelected": "لم يتم اختيار مطعم",
+  "menuSelectRestaurantToViewMenu": "يرجى اختيار مطعم لعرض القائمة",
+  "menuItemAddedToCart": "تم إضافة {itemName} إلى السلة",
+  "@menuItemAddedToCart": {
+    "placeholders": {
+      "itemName": {
+        "type": "String"
+      }
+    }
+  },
+  "cartCart": "السلة",
+  "cartTotal": "الإجمالي",
+  "cartProceedToCheckout": "المتابعة إلى الدفع",
+  "cartYourCartIsEmpty": "سلتك فارغة",
+  "cartAddItemsFromMenu": "أضف عناصر من القائمة للبدء",
+  "checkoutCheckout": "الدفع",
+  "checkoutYourCartIsEmpty": "سلتك فارغة",
+  "checkoutOrderSummary": "ملخص الطلب",
+  "checkoutItems": "العناصر ({count})",
+  "@checkoutItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "checkoutDeliveryFee": "رسوم التوصيل",
+  "checkoutTotal": "الإجمالي",
+  "checkoutPlaceOrder": "تأكيد الطلب",
+  "checkoutOrderPlacedSuccessfully": "تم تأكيد الطلب بنجاح!",
+  "checkoutDeliveryAddress": "عنوان التوصيل",
+  "checkoutAddress": "العنوان",
+  "checkoutEnterDeliveryAddress": "أدخل عنوان التوصيل",
+  "checkoutPaymentMethod": "طريقة الدفع",
+  "checkoutCard": "بطاقة",
+  "checkoutPayPal": "PayPal",
+  "checkoutCashOnDelivery": "الدفع عند الاستلام",
+  "checkoutEstimatedDeliveryTime": "وقت التوصيل المتوقع",
+  "checkoutMinutes": "{minutes} دقيقة",
+  "@checkoutMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ordersOrders": "الطلبات",
+  "ordersComingSoon": "الطلبات قريباً",
+  "ordersOrderHistoryWillAppearHere": "سوف يظهر سجل طلباتك هنا"
 }
 

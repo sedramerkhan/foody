@@ -13,6 +13,7 @@ class HomeErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(), // Enable pull-to-refresh
       child: SizedBox(
@@ -30,7 +31,7 @@ class HomeErrorState extends StatelessWidget {
                 ),
                 GapH(12.h),
                 AppText(
-                  'Error loading restaurants',
+                  l10n.homeErrorLoadingRestaurants,
                   typography: AppTypography.headingSmallBold,
                   color: AppColors.textPrimary,
                 ),
@@ -43,7 +44,7 @@ class HomeErrorState extends StatelessWidget {
                 ),
                 GapH(20.h),
                 PrimaryButton(
-                  text: 'Try Again',
+                  text: l10n.commonTryAgain,
                   onPressed: () => viewModel.loadRestaurants(),
                 ),
               ],

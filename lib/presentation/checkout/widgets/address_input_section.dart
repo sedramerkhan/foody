@@ -42,20 +42,21 @@ class _AddressInputSectionState extends State<AddressInputSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppText(
-          'Delivery Address',
+          l10n.checkoutDeliveryAddress,
           typography: AppTypography.headingSmallBold,
           color: AppColors.textPrimary,
         ),
         GapH(12.h),
         LabeledTextField(
-          label: 'Address',
+          label: l10n.checkoutAddress,
           controller: _controller,
           config: AppTextFieldConfig.standard(
-            hintText: 'Enter your delivery address',
+            hintText: l10n.checkoutEnterDeliveryAddress,
             isRequired: true,
         )),
       ],

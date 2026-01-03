@@ -5,6 +5,7 @@ class OrdersComingSoon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(20.w),
@@ -16,18 +17,18 @@ class OrdersComingSoon extends StatelessWidget {
               size: 56.w,
               color: AppColors.iconPrimaryAlt,
             ),
-            GapH(12.h),
-            AppText(
-              'Orders Coming Soon',
-              typography: AppTypography.headingMediumBold,
-              color: AppColors.textPrimary,
-            ),
-            GapH(6.h),
-            AppText(
-              'Your order history will appear here',
-              typography: AppTypography.bodyMediumRegular,
-              color: AppColors.textSecondaryAlt,
-            ),
+                GapH(12.h),
+                AppText(
+                  l10n.ordersComingSoon,
+                  typography: AppTypography.headingMediumBold,
+                  color: AppColors.textPrimary,
+                ),
+                GapH(6.h),
+                AppText(
+                  l10n.ordersOrderHistoryWillAppearHere,
+                  typography: AppTypography.bodyMediumRegular,
+                  color: AppColors.textSecondaryAlt,
+                ),
           ],
         ),
       ),

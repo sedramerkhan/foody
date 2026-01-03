@@ -13,30 +13,31 @@ class PaymentMethodSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppText(
-          'Payment Method',
+          l10n.checkoutPaymentMethod,
           typography: AppTypography.headingSmallBold,
           color: AppColors.textPrimary,
         ),
         GapH(12.h),
         _buildPaymentOption(
           PaymentMethod.card,
-          'Card',
+          l10n.checkoutCard,
           Icons.credit_card,
         ),
         GapH(8.h),
         _buildPaymentOption(
           PaymentMethod.paypal,
-          'PayPal',
+          l10n.checkoutPayPal,
           Icons.payment,
         ),
         GapH(8.h),
         _buildPaymentOption(
           PaymentMethod.cash,
-          'Cash on Delivery',
+          l10n.checkoutCashOnDelivery,
           Icons.money,
         ),
       ],

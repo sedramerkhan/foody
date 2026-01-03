@@ -13,7 +13,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Profile',
+        title: l10n.profileProfile,
         actions: [
           TextButton(
             onPressed: () {
@@ -45,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText(
-                      'Language / اللغة',
+                      l10n.profileLanguage,
                       typography: AppTypography.bodyMediumSemiBold,
                       color: AppColors.textPrimary,
                     ),
@@ -65,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                               }
                             },
                             child: AppText(
-                              'English',
+                              l10n.profileEnglish,
                               typography: AppTypography.bodyMediumMedium,
                               color: Colors.white,
                             ),
@@ -85,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
                               }
                             },
                             child: AppText(
-                              'العربية',
+                              l10n.profileArabic,
                               typography: AppTypography.bodyMediumMedium,
                               color: Colors.white,
                             ),
@@ -108,8 +108,8 @@ class ProfileScreen extends StatelessWidget {
                     result: response,
                     onSuccess: (_) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Syrian restaurants added successfully!'),
+                        SnackBar(
+                          content: Text(l10n.profileSyrianRestaurantsAddedSuccessfully),
                           backgroundColor: Colors.green,
                         ),
                       );
@@ -130,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                       );
                     }
                     return AppText(
-                      'Add Syrian Restaurants',
+                      l10n.profileAddSyrianRestaurants,
                       typography: AppTypography.bodyMediumMedium,
                       color: Colors.white,
                     );
@@ -138,11 +138,12 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              const Expanded(
+              Expanded(
                 child: Center(
-                  child: Text(
-                    'Profile features coming soon...',
-                    style: TextStyle(fontSize: 16),
+                  child: AppText(
+                    l10n.profileFeaturesComingSoon,
+                    typography: AppTypography.bodyMediumRegular,
+                    color: AppColors.textSecondaryAlt,
                   ),
                 ),
               ),

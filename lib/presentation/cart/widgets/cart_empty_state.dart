@@ -5,6 +5,7 @@ class CartEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(20.w),
@@ -16,19 +17,19 @@ class CartEmptyState extends StatelessWidget {
               size: 56.w,
               color: AppColors.iconPrimaryAlt,
             ),
-            GapH(12.h),
-            AppText(
-              'Your cart is empty',
-              typography: AppTypography.headingSmallBold,
-              color: AppColors.textPrimary,
-            ),
-            GapH(6.h),
-            AppText(
-              'Add items from the menu to get started',
-              typography: AppTypography.bodyMediumRegular,
-              color: AppColors.textSecondaryAlt,
-              textAlign: TextAlign.center,
-            ),
+                GapH(12.h),
+                AppText(
+                  l10n.cartYourCartIsEmpty,
+                  typography: AppTypography.headingSmallBold,
+                  color: AppColors.textPrimary,
+                ),
+                GapH(6.h),
+                AppText(
+                  l10n.cartAddItemsFromMenu,
+                  typography: AppTypography.bodyMediumRegular,
+                  color: AppColors.textSecondaryAlt,
+                  textAlign: TextAlign.center,
+                ),
           ],
         ),
       ),

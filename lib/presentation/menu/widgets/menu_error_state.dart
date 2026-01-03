@@ -13,6 +13,7 @@ class MenuErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(20.w),
@@ -24,24 +25,24 @@ class MenuErrorState extends StatelessWidget {
               size: 56.w,
               color: AppColors.iconPrimaryAlt,
             ),
-            GapH(12.h),
-            AppText(
-              'Error loading menu',
-              typography: AppTypography.headingSmallBold,
-              color: AppColors.textPrimary,
-            ),
-            GapH(6.h),
-            AppText(
-              message,
-              typography: AppTypography.bodyMediumRegular,
-              color: AppColors.textSecondaryAlt,
-              textAlign: TextAlign.center,
-            ),
-            GapH(20.h),
-            PrimaryButton(
-              text: 'Try Again',
-              onPressed: () => viewModel.loadMenuItems(),
-            ),
+                GapH(12.h),
+                AppText(
+                  l10n.menuErrorLoadingMenu,
+                  typography: AppTypography.headingSmallBold,
+                  color: AppColors.textPrimary,
+                ),
+                GapH(6.h),
+                AppText(
+                  message,
+                  typography: AppTypography.bodyMediumRegular,
+                  color: AppColors.textSecondaryAlt,
+                  textAlign: TextAlign.center,
+                ),
+                GapH(20.h),
+                PrimaryButton(
+                  text: l10n.commonTryAgain,
+                  onPressed: () => viewModel.loadMenuItems(),
+                ),
           ],
         ),
       ),

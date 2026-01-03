@@ -14,17 +14,18 @@ class CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return ChangeNotifierProvider(
       create: (_) => CheckoutViewModel(),
       child: Scaffold(
-        appBar: const CustomAppBar(title: 'Checkout'),
+        appBar: CustomAppBar(title: l10n.checkoutCheckout),
         body: Consumer<CheckoutViewModel>(
           builder: (context, checkoutViewModel, _) {
             final cartViewModel = Provider.of<CartViewModel>(context, listen: true);
             if (cartViewModel.isEmpty) {
               return Center(
                 child: AppText(
-                  'Your cart is empty',
+                  l10n.checkoutYourCartIsEmpty,
                   typography: AppTypography.headingSmallBold,
                   color: AppColors.textPrimary,
                 ),
@@ -93,7 +94,7 @@ class CheckoutScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         AppText(
-                          'Order Summary',
+                          l10n.checkoutOrderSummary,
                           typography: AppTypography.headingSmallBold,
                           color: AppColors.textPrimary,
                         ),
@@ -102,7 +103,7 @@ class CheckoutScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText(
-                              'Items (${cartViewModel.itemCount})',
+                              l10n.checkoutItems(cartViewModel.itemCount),
                               typography: AppTypography.bodyMediumRegular,
                               color: AppColors.textSecondaryAlt,
                             ),
@@ -118,7 +119,7 @@ class CheckoutScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText(
-                              'Delivery Fee',
+                              l10n.checkoutDeliveryFee,
                               typography: AppTypography.bodyMediumRegular,
                               color: AppColors.textSecondaryAlt,
                             ),
@@ -136,7 +137,7 @@ class CheckoutScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText(
-                              'Total',
+                              l10n.checkoutTotal,
                               typography: AppTypography.headingMediumBold,
                               color: AppColors.textPrimary,
                             ),
@@ -153,14 +154,14 @@ class CheckoutScreen extends StatelessWidget {
                   GapH(32.h),
                   // Place Order Button
                   AppButton(
-                    text: 'Place Order',
+                    text: l10n.checkoutPlaceOrder,
                     config: AppButtonConfig(
                       onPressed: checkoutViewModel.canPlaceOrder
                           ? () {
                               // TODO: Place order
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Order placed successfully!'),
+                                  content: Text(l10n.checkoutOrderPlacedSuccessfully),
                                 ),
                               );
                             }

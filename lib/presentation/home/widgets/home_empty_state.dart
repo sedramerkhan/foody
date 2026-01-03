@@ -5,6 +5,7 @@ class HomeEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(), // Enable pull-to-refresh
       child: SizedBox(
@@ -22,13 +23,13 @@ class HomeEmptyState extends StatelessWidget {
                 ),
                 GapH(12.h),
                 AppText(
-                  'No restaurants available',
+                  l10n.homeNoRestaurantsAvailable,
                   typography: AppTypography.headingSmallBold,
                   color: AppColors.textPrimary,
                 ),
                 GapH(6.h),
                 AppText(
-                  'Check back later for new restaurants',
+                  l10n.homeCheckBackLater,
                   typography: AppTypography.bodyMediumRegular,
                   color: AppColors.textSecondaryAlt,
                   textAlign: TextAlign.center,

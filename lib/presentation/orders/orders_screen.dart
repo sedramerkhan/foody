@@ -11,7 +11,7 @@ class OrdersScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Orders',
+        title: l10n.ordersOrders,
       ),
       body: const SafeArea(
         child: OrdersComingSoon(),

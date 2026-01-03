@@ -34,10 +34,11 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   void _handleAddToCart(Menu menuItem, Restaurant restaurant, CartViewModel cartViewModel) {
+    final l10n = S.current;
     cartViewModel.addItem(menuItem, restaurant);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${menuItem.itemName} added to cart'),
+        content: Text(l10n.menuItemAddedToCart(menuItem.itemName)),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -45,6 +46,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     final viewModel = Provider.of<MenuViewModel>(context);
     final restaurant = viewModel.selectedRestaurant;
     final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
@@ -52,7 +54,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: restaurant?.name ?? 'Menu',
+        title: restaurant?.name ?? l10n.menuMenu,
       ),
       body: SafeArea(
         child: restaurant == null

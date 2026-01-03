@@ -13,6 +13,7 @@ class AppBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.current;
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
@@ -29,21 +30,21 @@ class AppBottomNavBar extends StatelessWidget {
         fontSize: AppFontSize.s12,
         fontWeight: AppFontWeight.regular400,
       ),
-      items: const [
+      items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),
           activeIcon: Icon(Icons.home),
-          label: 'Home',
+          label: l10n.homeHome,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.receipt_long_outlined),
           activeIcon: Icon(Icons.receipt_long),
-          label: 'Orders',
+          label: l10n.ordersOrders,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
           activeIcon: Icon(Icons.person),
-          label: 'Profile',
+          label: l10n.profileProfile,
         ),
       ],
     );
