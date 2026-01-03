@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:foody/l10n/generated/l10n.dart';
 
 part 'order.freezed.dart';
 part 'order.g.dart';
@@ -12,6 +13,23 @@ enum OrderStatus {
   delivered,
   @JsonValue('canceled')
   canceled,
+}
+
+extension OrderStatusExtension on OrderStatus {
+  /// Get localized message for order status
+  String getMessage() {
+    final l10n = S.current;
+    switch (this) {
+      case OrderStatus.pending:
+        return l10n.ordersOrderPlaced;
+      case OrderStatus.confirmed:
+        return l10n.ordersOrderConfirmed;
+      case OrderStatus.delivered:
+        return l10n.ordersOrderDelivered;
+      case OrderStatus.canceled:
+        return l10n.ordersOrderCanceled;
+    }
+  }
 }
 
 @freezed

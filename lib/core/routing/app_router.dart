@@ -7,6 +7,8 @@ import 'package:foody/presentation/menu/menu_screen.dart';
 import 'package:foody/presentation/menu/menu_view_model.dart';
 import 'package:foody/presentation/orders/orders_screen.dart';
 import 'package:foody/presentation/orders/orders_view_model.dart';
+import 'package:foody/presentation/order_details/order_details_screen.dart';
+import 'package:foody/presentation/order_details/order_details_view_model.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
 import 'package:foody/presentation/profile/profile_view_model.dart';
 import 'package:foody/presentation/sign_in/sign_in_screen.dart';
@@ -67,6 +69,27 @@ class AppRouter {
             createViewModel: () => OrdersViewModel(),
             arguments: arguments,
             child: const OrdersScreen(),
+          ),
+          settings: settings,
+        );
+      case Routes.orderDetails:
+        final orderId = arguments?['orderId'] as String?;
+        if (orderId == null) {
+          // Fallback to orders screen if orderId is missing
+          return CustomPageRoute(
+            page: provideViewModel<OrdersViewModel>(
+              createViewModel: () => OrdersViewModel(),
+              arguments: arguments,
+              child: const OrdersScreen(),
+            ),
+            settings: settings,
+          );
+        }
+        return CustomPageRoute(
+          page: provideViewModel<OrderDetailsViewModel>(
+            createViewModel: () => OrderDetailsViewModel(),
+            arguments: arguments,
+            child: OrderDetailsScreen(orderId: orderId),
           ),
           settings: settings,
         );

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:foody/l10n/generated/l10n.dart';
 
 part 'delivery.freezed.dart';
 part 'delivery.g.dart';
@@ -10,6 +11,21 @@ enum DeliveryStatus {
   onTheWay,
   @JsonValue('delivered')
   delivered,
+}
+
+extension DeliveryStatusExtension on DeliveryStatus {
+  /// Get localized message for delivery status
+  String getMessage() {
+    final l10n = S.current;
+    switch (this) {
+      case DeliveryStatus.assigned:
+        return l10n.ordersPreparing;
+      case DeliveryStatus.onTheWay:
+        return l10n.ordersOnTheWay;
+      case DeliveryStatus.delivered:
+        return l10n.ordersDeliveryDelivered;
+    }
+  }
 }
 
 @freezed

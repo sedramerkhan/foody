@@ -37,7 +37,8 @@ class OrderRepo extends BaseRepository {
       
       try {
         final orders = ordersList
-            .map((json) => Order.fromJson(json))
+            .where((json) => json is Map<String, dynamic> && json['user_id'] == userId)
+            .map((json) => Order.fromJson(json as Map<String, dynamic>))
             .toList();
         
         // Sort by created_at descending (newest first)

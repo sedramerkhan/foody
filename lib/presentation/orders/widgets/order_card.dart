@@ -59,7 +59,16 @@ class OrderCard extends StatelessWidget {
     final delivery = orderWithDelivery.delivery;
     final dateFormat = DateFormat('MMM dd, yyyy • HH:mm');
 
-    return Container(
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          Routes.orderDetails,
+          arguments: {'orderId': order.orderId},
+        );
+      },
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -145,7 +154,7 @@ class OrderCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }
 

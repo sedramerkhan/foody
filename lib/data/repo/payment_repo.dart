@@ -37,15 +37,15 @@ class PaymentRepo extends BaseRepository {
       final paymentsList = response.getDataOrNull() ?? [];
 
       try {
-        final matchingPayments = paymentsList.where(
-              (json) => json['order_id'] == orderId,
-        ).toList();
+        final matchingPayments = paymentsList
+            .where((json) => json is Map<String, dynamic> && json['order_id'] == orderId)
+            .toList();
 
         if (matchingPayments.isEmpty) {
           return ApiResponse.failure(message: 'Payment not found');
         }
 
-        final paymentJson = matchingPayments.first;
+        final paymentJson = matchingPayments.first as Map<String, dynamic>;
         final payment = Payment.fromJson(paymentJson);
         return ApiResponse.success(payment);
       } catch (e) {
