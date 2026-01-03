@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:foody/core/base/view_model/base_view_model.dart';
-import 'package:foody/core/routing/routes.dart';
+import 'package:foody/common_imports.dart';
 import 'package:foody/presentation/main/main_screen.dart';
 import 'package:foody/presentation/home/home_view_model.dart';
 import 'package:foody/presentation/menu/menu_screen.dart';
@@ -8,10 +6,9 @@ import 'package:foody/presentation/menu/menu_view_model.dart';
 import 'package:foody/presentation/orders/orders_screen.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
 import 'package:foody/presentation/sign_in/sign_in_screen.dart';
+import 'package:foody/presentation/cart/cart_screen.dart';
+import 'package:foody/presentation/checkout/checkout_screen.dart';
 import 'package:foody/presentation/sign_in/sign_in_view_model.dart';
-import 'package:foody/shared/utils/navigation/custom_page_route.dart';
-import 'package:foody/shared/utils/navigation/navigation_helpers.dart';
-import 'package:foody/shared/utils/navigation/view_model_provider.dart';
 
 /// Application router that handles navigation and route generation
 class AppRouter {
@@ -66,6 +63,16 @@ class AppRouter {
       case Routes.profile:
         return CustomPageRoute(
           page: const ProfileScreen(),
+          settings: settings,
+        );
+      case Routes.cart:
+        return CustomPageRoute(
+          page: const CartScreen(),
+          settings: settings,
+        );
+      case Routes.checkout:
+        return CustomPageRoute(
+          page: const CheckoutScreen(),
           settings: settings,
         );
       default:

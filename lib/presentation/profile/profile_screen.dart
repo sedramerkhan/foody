@@ -1,5 +1,6 @@
 import 'package:foody/common_imports.dart';
 import 'package:foody/presentation/profile/widgets/profile_coming_soon.dart';
+import 'package:foody/shared/widgets/app_bar/custom_app_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -9,14 +10,8 @@ class ProfileScreen extends StatelessWidget {
     final l10n = S.current;
 
     return Scaffold(
-      appBar: AppBar(
-        title: AppText(
-          'Profile',
-          typography: AppTypography.headingMediumBold,
-          color: AppColors.textPrimary,
-        ),
-        backgroundColor: AppColors.bgSurface,
-        elevation: 0,
+      appBar: CustomAppBar(
+        title: 'Profile',
         actions: [
           TextButton(
             onPressed: () {

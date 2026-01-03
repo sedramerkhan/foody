@@ -2,6 +2,8 @@ import 'package:foody/common_imports.dart';
 import 'package:foody/data/model/menu/menu.dart';
 import 'package:foody/data/model/restaurant/restaurant.dart';
 import 'package:foody/presentation/menu/menu_view_model.dart';
+import 'package:foody/presentation/cart/cart_view_model.dart';
+import 'package:foody/shared/widgets/app_bar/custom_app_bar.dart';
 import 'package:foody/presentation/menu/widgets/menu_no_restaurant_state.dart';
 import 'package:foody/presentation/menu/widgets/menu_loading_state.dart';
 import 'package:foody/presentation/menu/widgets/menu_items_list.dart';
@@ -31,20 +33,25 @@ class _MenuScreenState extends State<MenuScreen> {
     });
   }
 
+  void _handleAddToCart(Menu menuItem, Restaurant restaurant, CartViewModel cartViewModel) {
+    cartViewModel.addItem(menuItem, restaurant);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${menuItem.itemName} added to cart'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<MenuViewModel>(context);
     final restaurant = viewModel.selectedRestaurant;
+    final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(
-        title: AppText(
-          restaurant?.name ?? 'Menu',
-          typography: AppTypography.headingMediumBold,
-          color: AppColors.textPrimary,
-        ),
-        backgroundColor: AppColors.bgSurface,
-        elevation: 0,
+      appBar: CustomAppBar(
+        title: restaurant?.name ?? 'Menu',
       ),
       body: SafeArea(
         child: restaurant == null
@@ -52,7 +59,12 @@ class _MenuScreenState extends State<MenuScreen> {
             : ApiResponseBuilder<List<Menu>>(
                 apiResponse: viewModel.menuItemsResponse,
                 loading: const MenuLoadingState(),
-                onSuccess: (menuItems) => MenuItemsList(menuItems: menuItems),
+                onSuccess: (menuItems) => MenuItemsList(
+                  menuItems: menuItems,
+                  onAddToCart: restaurant != null
+                      ? (menuItem) => _handleAddToCart(menuItem, restaurant, cartViewModel)
+                      : null,
+                ),
                 onError: (message) => MenuErrorState(
                   message: message,
                   viewModel: viewModel,
