@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foody/core/api_response/api_response_state/api_response_state.dart';
+import 'package:foody/core/api_response/api_response_extensions.dart';
 import 'package:foody/core/data/remote/firebase/firebase_database_service.dart';
 import 'package:foody/core/di/di.dart';
 
@@ -93,42 +94,12 @@ class FirebaseAuthService {
     String? phone,
     String? address,
   }) async {
-    print('[FIREBASE_AUTH] signUpWithEmail started');
-    print('[FIREBASE_AUTH] Username: $username');
-    print('[FIREBASE_AUTH] Email: $email');
-    
     try {
       final normalizedUsername = username.trim().toLowerCase();
       final normalizedEmail = email.trim().toLowerCase();
-      print('[FIREBASE_AUTH] Normalized username: $normalizedUsername');
-      print('[FIREBASE_AUTH] Normalized email: $normalizedEmail');
       
       // Check if username already exists
-      print('[FIREBASE_AUTH] Checking if username exists in database...');
-      final usernameCheck = await _databaseService.read('usernames/$normalizedUsername');
-      print('[FIREBASE_AUTH] Username check response: ${usernameCheck.runtimeType}');
-      
-      final usernameExists = usernameCheck.when(
-        success: (data) {
-          print('[FIREBASE_AUTH] Username check success, data: $data');
-          return data != null;
-        },
-        failure: (code, message) {
-          print('[FIREBASE_AUTH] Username check failed: $code - $message');
-          return false;
-        },
-        loading: () {
-          print('[FIREBASE_AUTH] Username check loading...');
-          return false;
-        },
-        none: () {
-          print('[FIREBASE_AUTH] Username check none state');
-          return false;
-        },
-      );
-      
-      if (usernameExists) {
-        print('[FIREBASE_AUTH] Username already exists, returning failure');
+      if (await _checkUsernameExists(normalizedUsername)) {
         return const ApiResponse.failure(
           code: 'username-exists',
           message: 'This username is already taken. Please choose another one.',
@@ -136,85 +107,110 @@ class FirebaseAuthService {
       }
       
       // Create user in Firebase Auth
-      print('[FIREBASE_AUTH] Creating user in Firebase Auth...');
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: normalizedEmail,
         password: password,
       );
-      print('[FIREBASE_AUTH] User credential received: ${userCredential.user?.uid}');
 
-      if (userCredential.user != null) {
-        final user = userCredential.user!;
-        final now = DateTime.now().toIso8601String();
-        print('[FIREBASE_AUTH] User created successfully, UID: ${user.uid}');
-        
-        // Store username mapping in Firebase Database
-        print('[FIREBASE_AUTH] Writing username mapping to database...');
-        final usernameWriteResult = await _databaseService.write('usernames/$normalizedUsername', {
-          'uid': user.uid,
-          'email': normalizedEmail,
-          'created_at': now,
-        });
-        print('[FIREBASE_AUTH] Username write result: ${usernameWriteResult.runtimeType}');
-        usernameWriteResult.when(
-          success: (_) => print('[FIREBASE_AUTH] Username mapping written successfully'),
-          failure: (code, message) => print('[FIREBASE_AUTH] Username mapping write failed: $code - $message'),
-          loading: () => print('[FIREBASE_AUTH] Username mapping write loading...'),
-          none: () => print('[FIREBASE_AUTH] Username mapping write none state'),
-        );
-        
-        // Store complete user data in Firebase Database
-        print('[FIREBASE_AUTH] Writing user data to database...');
-        final userData = {
-          'username': normalizedUsername,
-          'email': normalizedEmail,
-          'phone': phone?.trim().isNotEmpty == true ? phone!.trim() : null,
-          'address': address?.trim().isNotEmpty == true ? address!.trim() : null,
-          'created_at': now,
-          'updated_at': now,
-        };
-        print('[FIREBASE_AUTH] User data to write: $userData');
-        
-        final userWriteResult = await _databaseService.write('users/${user.uid}', userData);
-        print('[FIREBASE_AUTH] User write result: ${userWriteResult.runtimeType}');
-        userWriteResult.when(
-          success: (_) => print('[FIREBASE_AUTH] User data written successfully'),
-          failure: (code, message) => print('[FIREBASE_AUTH] User data write failed: $code - $message'),
-          loading: () => print('[FIREBASE_AUTH] User data write loading...'),
-          none: () => print('[FIREBASE_AUTH] User data write none state'),
-        );
-        
-        // Update Firebase Auth display name with username
-        print('[FIREBASE_AUTH] Updating display name...');
-        try {
-          await user.updateDisplayName(normalizedUsername);
-          await user.reload();
-          print('[FIREBASE_AUTH] Display name updated successfully');
-        } catch (e) {
-          print('[FIREBASE_AUTH] Display name update failed (non-critical): $e');
-        }
-        
-        print('[FIREBASE_AUTH] Sign-up completed successfully');
-        return ApiResponse.success(user);
-      } else {
-        print('[FIREBASE_AUTH] User credential is null');
+      final user = userCredential.user;
+      if (user == null) {
         return const ApiResponse.failure(
           message: 'Sign up failed. Please try again.',
         );
       }
+
+      final now = DateTime.now().toIso8601String();
+      
+      // Store username mapping in Firebase Database (fail-fast on error)
+      final usernameWriteResult = await _writeUsernameMapping(
+        normalizedUsername,
+        user.uid,
+        normalizedEmail,
+        now,
+      );
+      if (usernameWriteResult.isFailure) {
+        return usernameWriteResult.mapData((_) => user);
+      }
+      
+      // Store complete user data in Firebase Database (fail-fast on error)
+      final userWriteResult = await _writeUserData(
+        user.uid,
+        normalizedUsername,
+        normalizedEmail,
+        phone,
+        address,
+        now,
+      );
+      if (userWriteResult.isFailure) {
+        return userWriteResult.mapData((_) => user);
+      }
+      
+      // Update display name (non-critical, log only on failure)
+      await _updateDisplayName(user, normalizedUsername);
+      
+      return ApiResponse.success(user);
     } on FirebaseAuthException catch (e) {
-      print('[FIREBASE_AUTH] FirebaseAuthException: ${e.code} - ${e.message}');
-      print('[FIREBASE_AUTH] Stack trace: ${e.stackTrace}');
       return ApiResponse.failure(
         code: e.code,
         message: _getErrorMessage(e.code),
       );
-    } catch (e, stackTrace) {
-      print('[FIREBASE_AUTH] Unexpected error: $e');
-      print('[FIREBASE_AUTH] Stack trace: $stackTrace');
+    } catch (e) {
       return ApiResponse.failure(
         message: 'An unexpected error occurred: ${e.toString()}',
       );
+    }
+  }
+
+  /// Check if username already exists in database
+  Future<bool> _checkUsernameExists(String normalizedUsername) async {
+    final usernameCheck = await _databaseService.read('usernames/$normalizedUsername');
+    return usernameCheck.getDataOrNull() != null;
+  }
+
+  /// Write username mapping to database
+  Future<ApiResponse<void>> _writeUsernameMapping(
+    String normalizedUsername,
+    String uid,
+    String email,
+    String createdAt,
+  ) async {
+    final result = await _databaseService.write('usernames/$normalizedUsername', {
+      'uid': uid,
+      'email': email,
+      'created_at': createdAt,
+    });
+    return result;
+  }
+
+  /// Write user data to database
+  Future<ApiResponse<void>> _writeUserData(
+    String uid,
+    String normalizedUsername,
+    String normalizedEmail,
+    String? phone,
+    String? address,
+    String now,
+  ) async {
+    final userData = {
+      'username': normalizedUsername,
+      'email': normalizedEmail,
+      'phone': phone?.trim().isNotEmpty == true ? phone!.trim() : null,
+      'address': address?.trim().isNotEmpty == true ? address!.trim() : null,
+      'created_at': now,
+      'updated_at': now,
+    };
+    
+    return await _databaseService.write('users/$uid', userData);
+  }
+
+  /// Update display name (non-critical operation)
+  Future<void> _updateDisplayName(User user, String normalizedUsername) async {
+    try {
+      await user.updateDisplayName(normalizedUsername);
+      await user.reload();
+    } catch (e) {
+      // Non-critical, log only
+      print('[FIREBASE_AUTH] Display name update failed (non-critical): $e');
     }
   }
   
@@ -222,20 +218,7 @@ class FirebaseAuthService {
   Future<ApiResponse<String?>> getUsernameForUser(String uid) async {
     try {
       final userData = await _databaseService.read('users/$uid');
-      return userData.when(
-        success: (data) {
-          if (data != null) {
-            return ApiResponse.success(data['username'] as String?);
-          }
-          return const ApiResponse.success(null);
-        },
-        failure: (code, message) => ApiResponse.failure(
-          code: code,
-          message: message,
-        ),
-        loading: () => const ApiResponse.loading(),
-        none: () => const ApiResponse.none(),
-      );
+      return userData.mapData((data) => data?['username'] as String?);
     } catch (e) {
       return ApiResponse.failure(
         message: 'Failed to get username: ${e.toString()}',

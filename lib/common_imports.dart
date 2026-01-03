@@ -81,6 +81,7 @@ export 'package:foody/core/api_response/api_response_builder.dart';
 export 'package:foody/core/api_response/api_response_builder_with_cache.dart';
 export 'package:foody/core/api_response/api_response_handler.dart';
 export 'package:foody/core/api_response/api_response_state/api_response_state.dart';
+export 'package:foody/core/api_response/api_response_extensions.dart';
 
 // Base Classes
 export 'package:foody/core/base/view_model/base_view_model.dart';

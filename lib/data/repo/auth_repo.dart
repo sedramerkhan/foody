@@ -1,3 +1,4 @@
+import 'package:foody/core/api_response/api_response_extensions.dart';
 import 'package:foody/core/base/repository/base_repo.dart';
 import 'package:foody/core/api_response/api_response_state/api_response_state.dart';
 import 'package:foody/core/data/remote/firebase/firebase_auth_service.dart';
@@ -17,35 +18,28 @@ class AuthRepo extends BaseRepository {
       password: password,
     );
 
-    return await response.when(
-      success: (user) async {
-        if (user == null) {
-          return const ApiResponse.failure(
-            message: 'Sign in failed. Please try again.',
-          );
-        }
-        // Get username from database if available
-        final usernameResponse = await _authService.getUsernameForUser(user.uid);
-        final dbUsername = usernameResponse.when(
-          success: (u) => u,
-          failure: (_, _) => null,
-          loading: () => null,
-          none: () => null,
-        );
-        
-        return ApiResponse.success({
-          'uid': user.uid,
-          'username': dbUsername,
-          'email': user.email ?? email,
-          'displayName': user.displayName ?? '',
-        });
-      },
-      failure: (code, message) {
-        return ApiResponse.failure(code: code, message: message);
-      },
-      loading: () => const ApiResponse.loading(),
-      none: () => const ApiResponse.none(),
-    );
+    if (response.isFailure) {
+      final failure = response as Failure;
+      return ApiResponse.failure(code: failure.code, message: failure.message);
+    }
+
+    final user = response.getDataOrNull();
+    if (user == null) {
+      return const ApiResponse.failure(
+        message: 'Sign in failed. Please try again.',
+      );
+    }
+
+    // Get username from database if available
+    final usernameResponse = await _authService.getUsernameForUser(user.uid);
+    final dbUsername = usernameResponse.getDataOrNull();
+    
+    return ApiResponse.success({
+      'uid': user.uid,
+      'username': dbUsername,
+      'email': user.email ?? email,
+      'displayName': user.displayName ?? '',
+    });
   }
 
   /// Sign up with username, email, password, and user information using Firebase
@@ -56,9 +50,6 @@ class AuthRepo extends BaseRepository {
     String? phone,
     String? address,
   }) async {
-    print('[AUTH_REPO] Sign-up called');
-    print('[AUTH_REPO] Calling FirebaseAuthService.signUpWithEmail');
-    
     final response = await _authService.signUpWithEmail(
       username: username,
       email: email,
@@ -67,40 +58,26 @@ class AuthRepo extends BaseRepository {
       address: address,
     );
 
-    print('[AUTH_REPO] Response received from FirebaseAuthService: ${response.runtimeType}');
-    
-    return response.when(
-      success: (user) {
-        print('[AUTH_REPO] Success branch - user: ${user?.uid}');
-        if (user == null) {
-          print('[AUTH_REPO] User is null, returning failure');
-          return const ApiResponse.failure(
-            message: 'Sign up failed. Please try again.',
-          );
-        }
-        print('[AUTH_REPO] Creating success response with user data');
-        return ApiResponse.success({
-          'uid': user.uid,
-          'username': username,
-          'email': email,
-          'phone': phone ?? '',
-          'address': address ?? '',
-          'displayName': user.displayName ?? '',
-        });
-      },
-      failure: (code, message) {
-        print('[AUTH_REPO] Failure: $code - $message');
-        return ApiResponse.failure(code: code, message: message);
-      },
-      loading: () {
-        print('[AUTH_REPO] Still loading...');
-        return const ApiResponse.loading();
-      },
-      none: () {
-        print('[AUTH_REPO] None state');
-        return const ApiResponse.none();
-      },
-    );
+    if (response.isFailure) {
+      final failure = response as Failure;
+      return ApiResponse.failure(code: failure.code, message: failure.message);
+    }
+
+    final user = response.getDataOrNull();
+    if (user == null) {
+      return const ApiResponse.failure(
+        message: 'Sign up failed. Please try again.',
+      );
+    }
+
+    return ApiResponse.success({
+      'uid': user.uid,
+      'username': username,
+      'email': email,
+      'phone': phone ?? '',
+      'address': address ?? '',
+      'displayName': user.displayName ?? '',
+    });
   }
 
   /// Sign out the current user
