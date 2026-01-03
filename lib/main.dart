@@ -5,9 +5,16 @@ import 'package:foody/core/di/di.dart';
 import 'package:foody/core/routing/app_router.dart';
 import 'package:foody/core/routing/navigator_key.dart';
 import 'package:foody/presentation/cart/cart_view_model.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:foody/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

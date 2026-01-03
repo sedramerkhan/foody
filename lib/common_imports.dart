@@ -99,6 +99,10 @@ export 'package:foody/core/data/remote/api_response_code.dart';
 export 'package:foody/core/data/remote/api_upload_file.dart';
 export 'package:foody/core/data/remote/models/error/server_error.dart';
 
+// Firebase
+export 'package:foody/core/data/remote/firebase/firebase_database_service.dart';
+export 'package:foody/core/data/remote/firebase/firebase_auth_service.dart';
+
 // Network
 export 'package:foody/core/data/remote/network/connection_info.dart';
 

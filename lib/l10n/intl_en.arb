@@ -15,7 +15,23 @@
   "homeYouHaveSuccessfullySignedIn": "You have successfully signed in.",
   "homeSignOut": "Sign Out",
   "commonThisFieldIsRequired": "This field is required",
-  "commonPasswordMustBeAtLeast8Characters": "Password must be at least 8 characters"
+  "commonPasswordMustBeAtLeast8Characters": "Password must be at least 8 characters",
+  "commonInvalidEmail": "Please enter a valid email address",
+  "signUpCreateAccount": "Create Account",
+  "signUpSignUpToContinue": "Sign up to continue",
+  "signUpSignUp": "Sign Up",
+  "signUpConfirmPassword": "Confirm Password",
+  "signUpEnterConfirmPassword": "Enter confirm password",
+  "signUpPasswordsDoNotMatch": "Passwords do not match",
+  "signUpAlreadyHaveAccount": "Already have account?",
+  "signUpFullName": "Full Name",
+  "signUpEnterYourFullName": "Enter your full name",
+  "signUpEmail": "Email",
+  "signUpEnterYourEmail": "Enter your email",
+  "signUpPhone": "Phone (Optional)",
+  "signUpEnterYourPhone": "Enter your phone number",
+  "signUpAddress": "Address (Optional)",
+  "signUpEnterYourAddress": "Enter your address"
 }
 
 

@@ -11,9 +11,9 @@ class SignInViewModel extends BaseViewModel {
       ValueNotifier(const ApiResponse.none());
 
 
-  /// Sign in with username and password
+  /// Sign in with email and password
   Future<ApiResponse> signIn({
-    required String username,
+    required String email,
     required String password,
   }) async {
     notifyListeners();
@@ -21,12 +21,12 @@ class SignInViewModel extends BaseViewModel {
     signInResponse.value = const ApiResponse.loading();
 
     final response = await _authRepo.signIn(
-      username: username,
+      email: email,
       password: password,
     );
 
-    signInResponse.value = ApiResponse.success({});
-    return signInResponse.value;
+    signInResponse.value = response;
+    return response;
   }
 
   @override

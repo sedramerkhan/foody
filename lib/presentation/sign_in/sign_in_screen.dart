@@ -13,25 +13,29 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  ApiResponse<Map<String, dynamic>>? _lastResponse;
   late final String? Function(String?) _passwordValidator;
+  late final String? Function(String?) _emailValidator;
 
   @override
   void initState() {
     super.initState();
-    // Initialize password validator with localized messages
+    // Initialize validators with localized messages
     final l10n = S.current;
     _passwordValidator = Validators.passwordWithMessages(
       requiredMessage: l10n.commonThisFieldIsRequired,
       minLengthMessage: l10n.commonPasswordMustBeAtLeast8Characters,
     );
+    _emailValidator = Validators.emailWithMessages(
+      requiredMessage: l10n.commonThisFieldIsRequired,
+      invalidMessage: l10n.commonInvalidEmail,
+    );
   }
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -40,11 +44,13 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> _handleSignIn(SignInViewModel viewModel) async {
     if (_formKey.currentState?.validate() ?? false) {
       final result = await viewModel.signIn(
-        username: _usernameController.text.trim(),
+        email: _emailController.text.trim(),
         password: _passwordController.text,
       );
 
+      if (!mounted) return;
       ApiResponseHandler.handle(context: context, result: result, onSuccess: (_){
+        if (!mounted) return;
         NavigationUtils.pushReplacementNamed(context, Routes.main);
       });
     }
@@ -73,8 +79,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SignInGradientHeader(),
                   SignInFormCard(
                     formKey: _formKey,
-                    usernameController: _usernameController,
+                    emailController: _emailController,
                     passwordController: _passwordController,
+                    emailValidator: _emailValidator,
                     passwordValidator: _passwordValidator,
                     viewModel: viewModel,
                     isLoading: isLoading,
@@ -83,7 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       // TODO: Navigate to forgot password screen
                     },
                     onSignUp: () {
-                      // TODO: Navigate to sign up screen
+                      NavigationUtils.pushNamed(context, Routes.signUp);
                     },
                   ),
                 ],

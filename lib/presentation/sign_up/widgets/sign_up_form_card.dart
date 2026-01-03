@@ -1,34 +1,40 @@
 import 'package:foody/common_imports.dart';
-import 'package:foody/presentation/sign_in/sign_in_view_model.dart';
-import 'package:foody/shared/widgets/buttons/app_button.dart';
-import 'package:foody/shared/widgets/buttons/app_button_config.dart';
-import 'package:foody/shared/widgets/buttons/app_button_style.dart';
-import 'package:foody/shared/widgets/text_field/validation/text_field_validators.dart';
+import 'package:foody/presentation/sign_up/sign_up_view_model.dart';
 
-class SignInFormCard extends StatelessWidget {
+class SignUpFormCard extends StatelessWidget {
   final GlobalKey<FormState> formKey;
+  final TextEditingController usernameController;
   final TextEditingController emailController;
+  final TextEditingController phoneController;
+  final TextEditingController addressController;
   final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  final String? Function(String?) usernameValidator;
   final String? Function(String?) emailValidator;
+  final String? Function(String?) phoneValidator;
   final String? Function(String?) passwordValidator;
-  final SignInViewModel viewModel;
+  final SignUpViewModel viewModel;
   final bool isLoading;
-  final VoidCallback onSignIn;
-  final VoidCallback onForgotPassword;
   final VoidCallback onSignUp;
+  final VoidCallback onSignIn;
 
-  const SignInFormCard({
+  const SignUpFormCard({
     super.key,
     required this.formKey,
+    required this.usernameController,
     required this.emailController,
+    required this.phoneController,
+    required this.addressController,
     required this.passwordController,
+    required this.confirmPasswordController,
+    required this.usernameValidator,
     required this.emailValidator,
+    required this.phoneValidator,
     required this.passwordValidator,
     required this.viewModel,
     required this.isLoading,
-    required this.onSignIn,
-    required this.onForgotPassword,
     required this.onSignUp,
+    required this.onSignIn,
   });
 
   @override
@@ -61,6 +67,18 @@ class SignInFormCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 GapH(20.h),
+                /// Username field
+                LabeledTextField(
+                  label: l10n.signInUsername,
+                  controller: usernameController,
+                  config: AppTextFieldConfig.standard(
+                    hintText: l10n.signInEnterYourUsername,
+                    isRequired: true,
+                    validator: usernameValidator,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                GapH(16.h),
                 /// Email field
                 LabeledTextField(
                   label: l10n.signUpEmail,
@@ -72,6 +90,29 @@ class SignInFormCard extends StatelessWidget {
                   ),
                 ),
                 GapH(16.h),
+                /// Phone field
+                LabeledTextField(
+                  label: l10n.signUpPhone,
+                  controller: phoneController,
+                  config: AppTextFieldConfig.phone(
+                    hintText: l10n.signUpEnterYourPhone,
+                    isRequired: false,
+                    validator: phoneValidator,
+                  ),
+                ),
+                GapH(16.h),
+                /// Address field (optional)
+                LabeledTextField(
+                  label: l10n.signUpAddress,
+                  controller: addressController,
+                  config: AppTextFieldConfig.multiline(
+                    hintText: l10n.signUpEnterYourAddress,
+                    isRequired: false,
+                    maxLines: 3,
+                    minLines: 2,
+                  ),
+                ),
+                GapH(16.h),
                 /// Password field
                 LabeledTextField(
                   label: l10n.signInPassword,
@@ -79,50 +120,50 @@ class SignInFormCard extends StatelessWidget {
                   config: AppTextFieldConfig.password(
                     hintText: l10n.signInEnterYourPassword,
                     validator: passwordValidator,
-                    onSubmitted: (value) => onSignIn(),
                   ),
                 ),
-                /// Forgot password
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: AppClickableContainer(
-                    config:ClickableContainerConfig.enabled(onTap:  onForgotPassword),
-                    style: ClickableContainerStyle.standard(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 4.w,
-                        vertical: 4.h,
-                      ),
-                    ),
-                    child: AppText(
-                      l10n.signInForgotPassword,
-                      typography: AppTypography.bodySmallRegular,
-                      color: AppColors.textSecondaryAlt,
-                    ),
+                GapH(16.h),
+                /// Confirm Password field
+                LabeledTextField(
+                  label: l10n.signUpConfirmPassword,
+                  controller: confirmPasswordController,
+                  config: AppTextFieldConfig.password(
+                    hintText: l10n.signUpEnterConfirmPassword,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return l10n.commonThisFieldIsRequired;
+                      }
+                      if (value != passwordController.text) {
+                        return l10n.signUpPasswordsDoNotMatch;
+                      }
+                      return null;
+                    },
+                    onSubmitted: (_) => onSignUp(),
                   ),
                 ),
                 GapH(32.h),
-                /// Gradient Sign in button
+                /// Gradient Sign up button
                 AppButton(
-                  text: l10n.signInSignIn.toUpperCase(),
+                  text: l10n.signUpSignUp.toUpperCase(),
                   config: AppButtonConfig(
-                    onPressed: isLoading ? null : onSignIn,
+                    onPressed: isLoading ? null : onSignUp,
                     isLoading: isLoading,
                   ),
                   style: AppButtonStyle.gradientPrimary(),
                   expandWidth: true,
                 ),
                 GapH(8.h),
-                /// Sign up
+                /// Sign in link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppText(
-                      l10n.signInDontHaveAccount,
+                      l10n.signUpAlreadyHaveAccount,
                       typography: AppTypography.bodySmallRegular,
                       color: AppColors.textSecondaryAlt,
                     ),
                     AppClickableContainer(
-                      config: ClickableContainerConfig.enabled(onTap: onSignUp),
+                      config: ClickableContainerConfig.enabled(onTap: onSignIn),
                       style: ClickableContainerStyle.standard(
                         padding: EdgeInsets.symmetric(
                           horizontal: 4.w,
@@ -130,14 +171,13 @@ class SignInFormCard extends StatelessWidget {
                         ),
                       ),
                       child: AppText(
-                        l10n.signInSignUp,
+                        l10n.signInSignIn,
                         typography: AppTypography.bodySmallMedium,
                       ),
                     ),
                   ],
                 ),
-                GapH(MediaQuery.heightOf(context) * 0.2),
-                // Bottom padding for scroll
+                GapH(30.h),
               ],
             ),
           ),
@@ -146,3 +186,4 @@ class SignInFormCard extends StatelessWidget {
     );
   }
 }
+

@@ -3,6 +3,7 @@
   "signInWelcomeBack": "مرحباً بعودتك",
   "signInSignInToContinue": "قم بتسجيل الدخول للمتابعة",
   "signInUsername": "اسم المستخدم",
+  "signInEnterYourUsername": "أدخل اسم المستخدم",
   "signInPassword": "كلمة المرور",
   "signInEnterYourUsername": "أدخل اسم المستخدم",
   "signInEnterYourPassword": "أدخل كلمة المرور",
@@ -15,6 +16,22 @@
   "homeYouHaveSuccessfullySignedIn": "لقد قمت بتسجيل الدخول بنجاح.",
   "homeSignOut": "تسجيل الخروج",
   "commonThisFieldIsRequired": "هذا الحقل مطلوب",
-  "commonPasswordMustBeAtLeast8Characters": "يجب أن تكون كلمة المرور 8 أحرف على الأقل"
+  "commonPasswordMustBeAtLeast8Characters": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+  "commonInvalidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+  "signUpCreateAccount": "إنشاء حساب",
+  "signUpSignUpToContinue": "سجل للمتابعة",
+  "signUpSignUp": "التسجيل",
+  "signUpConfirmPassword": "تأكيد كلمة المرور",
+  "signUpEnterConfirmPassword": "أدخل تأكيد كلمة المرور",
+  "signUpPasswordsDoNotMatch": "كلمات المرور غير متطابقة",
+  "signUpAlreadyHaveAccount": "لديك حساب بالفعل؟",
+  "signUpFullName": "الاسم الكامل",
+  "signUpEnterYourFullName": "أدخل اسمك الكامل",
+  "signUpEmail": "البريد الإلكتروني",
+  "signUpEnterYourEmail": "أدخل بريدك الإلكتروني",
+  "signUpPhone": "الهاتف (اختياري)",
+  "signUpEnterYourPhone": "أدخل رقم هاتفك",
+  "signUpAddress": "العنوان (اختياري)",
+  "signUpEnterYourAddress": "أدخل عنوانك"
 }
 

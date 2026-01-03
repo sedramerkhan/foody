@@ -11,4 +11,10 @@ void _registerLazySingletonHelper<T extends Object>(T Function() creator) {
 
 void registerSingleton() {
   _registerLazySingletonHelper<ApiClient>(() => ApiClient());
+  _registerLazySingletonHelper<FirebaseDatabaseService>(
+    () => FirebaseDatabaseService(),
+  );
+  _registerLazySingletonHelper<FirebaseAuthService>(
+    () => FirebaseAuthService(),
+  );
 }

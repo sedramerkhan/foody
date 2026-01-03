@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "852603431938",
+    "firebase_url": "https://foody-flutter-740d4-default-rtdb.firebaseio.com",
+    "project_id": "foody-flutter-740d4",
+    "storage_bucket": "foody-flutter-740d4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852603431938:android:5e92d6bb4fb76477ae8b1b",
+        "android_client_info": {
+          "package_name": "com.sm.foody"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe4pIVdnwbA9bMLcC3pHY6Xo0MQZNgpPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -37,6 +37,27 @@ class Validators {
     return null;
   }
 
+  /// Validates email format with custom messages
+  static String? Function(String?) emailWithMessages({
+    required String requiredMessage,
+    required String invalidMessage,
+  }) {
+    return (String? value) {
+      if (value == null || value.trim().isEmpty) {
+        return requiredMessage;
+      }
+
+      final emailRegex = RegExp(
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+      );
+
+      if (!emailRegex.hasMatch(value)) {
+        return invalidMessage;
+      }
+      return null;
+    };
+  }
+
   /// Validates phone number (basic validation for digits)
   static String? phone(String? value) {
     if (value == null || value.isEmpty) return null;
