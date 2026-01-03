@@ -22,6 +22,13 @@ class HomeViewModel extends BaseViewModel {
     return response;
   }
 
+  /// Refresh restaurants (for pull-to-refresh)
+  /// This keeps the current data visible while refreshing
+  Future<void> refreshRestaurants() async {
+    final response = await _restaurantRepo.getRestaurants();
+    restaurantsResponse.value = response;
+  }
+
   @override
   void dispose() {
     restaurantsResponse.dispose();

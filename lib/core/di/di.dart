@@ -17,4 +17,7 @@ void registerSingleton() {
   _registerLazySingletonHelper<FirebaseAuthService>(
     () => FirebaseAuthService(),
   );
+
+
+  _registerLazySingletonHelper<AppLocalData>(()=> AppLocalData());
 }

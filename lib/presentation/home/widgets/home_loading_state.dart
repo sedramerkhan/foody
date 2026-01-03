@@ -1,4 +1,5 @@
 import 'package:foody/common_imports.dart';
+import 'package:foody/presentation/home/widgets/restaurant_card.dart';
 import 'package:foody/presentation/home/widgets/restaurant_card_skeleton.dart';
 
 class HomeLoadingState extends StatelessWidget {
@@ -9,6 +10,7 @@ class HomeLoadingState extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(12.w),
       child: GridView.builder(
+        physics: const AlwaysScrollableScrollPhysics(), // Enable pull-to-refresh
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 12.w,

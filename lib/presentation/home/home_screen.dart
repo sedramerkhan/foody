@@ -51,19 +51,24 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SafeArea(
-        child: ApiResponseBuilder<List<Restaurant>>(
-          apiResponse: viewModel.restaurantsResponse,
-          loading: const HomeLoadingState(),
-          onSuccess: (restaurants) => HomeRestaurantList(
-            restaurants: restaurants,
-            onRestaurantTap: _navigateToMenu,
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await viewModel.refreshRestaurants();
+          },
+          child: ApiResponseBuilder<List<Restaurant>>(
+            apiResponse: viewModel.restaurantsResponse,
+            loading: const HomeLoadingState(),
+            onSuccess: (restaurants) => HomeRestaurantList(
+              restaurants: restaurants,
+              onRestaurantTap: _navigateToMenu,
+            ),
+            onError: (message) => HomeErrorState(
+              message: message,
+              viewModel: viewModel,
+            ),
+            empty: const HomeEmptyState(),
+            onTryAgain: () => viewModel.loadRestaurants(),
           ),
-          onError: (message) => HomeErrorState(
-            message: message,
-            viewModel: viewModel,
-          ),
-          empty: const HomeEmptyState(),
-          onTryAgain: () => viewModel.loadRestaurants(),
         ),
       ),
     );

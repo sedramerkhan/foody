@@ -1,210 +1,372 @@
 import 'dart:async';
 import 'package:foody/core/base/repository/base_repo.dart';
 import 'package:foody/core/api_response/api_response_state/api_response_state.dart';
+import 'package:foody/core/api_response/api_response_extensions.dart';
+import 'package:foody/core/data/remote/firebase/firebase_database_service.dart';
+import 'package:foody/core/di/di.dart';
 import 'package:foody/data/model/menu/menu.dart';
 
 /// Repository for menu operations
 class MenuRepo extends BaseRepository {
-  /// Get menu items for a restaurant (mock data)
+  final FirebaseDatabaseService _databaseService = getIt<FirebaseDatabaseService>();
+
+  /// Get menu items for a restaurant from Firebase
   Future<ApiResponse<List<Menu>>> getMenuItems(String restaurantId) async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 600));
+    final response = await _databaseService.readList('menus/$restaurantId');
+    
+    if (response.isFailure) {
+      return response.mapData((_) => <Menu>[]);
+    }
 
-    // Mock menu data based on restaurant ID
-    final menuItems = _getMenuItemsForRestaurant(restaurantId);
-
-    return ApiResponse.success(menuItems);
+    final menuList = response.getDataOrNull() ?? [];
+    
+    try {
+      final menuItems = menuList
+          .map((json) => Menu.fromJson(json))
+          .toList();
+      return ApiResponse.success(menuItems);
+    } catch (e) {
+      return ApiResponse.failure(
+        message: 'Failed to parse menu items: ${e.toString()}',
+      );
+    }
   }
 
-  List<Menu> _getMenuItemsForRestaurant(String restaurantId) {
+  /// Add a menu item to Firebase
+  Future<ApiResponse<String>> addMenuItem(Menu menuItem) async {
+    final menuData = menuItem.toJson();
+    final path = 'menus/${menuItem.restaurantId}/${menuItem.menuId}';
+    
+    final response = await _databaseService.write(path, menuData);
+    
+    if (response.isFailure) {
+      return response.mapData((_) => '');
+    }
+    
+    return ApiResponse.success(menuItem.menuId);
+  }
+
+  /// Add multiple menu items to Firebase
+  Future<ApiResponse<void>> addMenuItems(List<Menu> menuItems) async {
+    try {
+      for (final menuItem in menuItems) {
+        final response = await addMenuItem(menuItem);
+        if (response.isFailure) {
+          final failure = response as Failure;
+          return ApiResponse.failure(
+            message: 'Failed to add menu item ${menuItem.itemNameEn}: ${failure.message}',
+          );
+        }
+      }
+      return const ApiResponse.success(null);
+    } catch (e) {
+      return ApiResponse.failure(
+        message: 'Failed to add menu items: ${e.toString()}',
+      );
+    }
+  }
+
+  /// Get Syrian menu items for a restaurant
+  static List<Menu> getSyrianMenuItems(String restaurantId) {
     switch (restaurantId) {
-      case '1': // Bella Italia
+      case 'syrian_1': // مطعم الشام الأصيل
         return [
           Menu(
-            menuId: 'm1',
-            restaurantId: '1',
-            itemName: 'Margherita Pizza',
-            description: 'Fresh mozzarella, tomato sauce, and basil',
-            price: 14.99,
-            imageUrl: 'https://picsum.photos/seed/margherita/300/200',
+            menuId: 'syrian_1_m1',
+            restaurantId: 'syrian_1',
+            itemNameAr: 'كباب حلب',
+            itemNameEn: 'Aleppo Kebab',
+            descriptionAr: 'كباب مشوي على الفحم مع الأرز والسلطة',
+            descriptionEn: 'Grilled kebab on charcoal with rice and salad',
+            price: 25.00,
+            imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
           Menu(
-            menuId: 'm2',
-            restaurantId: '1',
-            itemName: 'Spaghetti Carbonara',
-            description: 'Creamy pasta with bacon and parmesan',
-            price: 16.99,
-            imageUrl: 'https://picsum.photos/seed/carbonara/300/200',
+            menuId: 'syrian_1_m2',
+            restaurantId: 'syrian_1',
+            itemNameAr: 'شاورما لحم',
+            itemNameEn: 'Beef Shawarma',
+            descriptionAr: 'شاورما لحم طازجة مع الثوم والطماطم',
+            descriptionEn: 'Fresh beef shawarma with garlic and tomatoes',
+            price: 18.00,
+            imageUrl: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
           Menu(
-            menuId: 'm3',
-            restaurantId: '1',
-            itemName: 'Chicken Parmesan',
-            description: 'Breaded chicken with marinara and mozzarella',
-            price: 18.99,
-            imageUrl: 'https://picsum.photos/seed/chicken-parm/300/200',
+            menuId: 'syrian_1_m3',
+            restaurantId: 'syrian_1',
+            itemNameAr: 'فتة حمص',
+            itemNameEn: 'Hummus Fatteh',
+            descriptionAr: 'حمص مع الخبز المحمص والصنوبر',
+            descriptionEn: 'Hummus with toasted bread and pine nuts',
+            price: 12.00,
+            imageUrl: 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
           Menu(
-            menuId: 'm4',
-            restaurantId: '1',
-            itemName: 'Caesar Salad',
-            description: 'Romaine lettuce, croutons, parmesan, caesar dressing',
-            price: 10.99,
-            imageUrl: 'https://picsum.photos/seed/caesar/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm5',
-            restaurantId: '1',
-            itemName: 'Tiramisu',
-            description: 'Classic Italian dessert with coffee and mascarpone',
-            price: 8.99,
-            imageUrl: 'https://picsum.photos/seed/tiramisu/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm6',
-            restaurantId: '1',
-            itemName: 'Lasagna',
-            description: 'Layered pasta with meat sauce and cheese',
-            price: 17.99,
-            imageUrl: 'https://picsum.photos/seed/lasagna/300/200',
-            availabilityStatus: false,
-          ),
-        ];
-
-      case '2': // Dragon Palace
-        return [
-          Menu(
-            menuId: 'm7',
-            restaurantId: '2',
-            itemName: 'Sweet and Sour Chicken',
-            description: 'Crispy chicken with sweet and sour sauce',
-            price: 13.99,
-            imageUrl: 'https://picsum.photos/seed/sweet-sour/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm8',
-            restaurantId: '2',
-            itemName: 'Kung Pao Shrimp',
-            description: 'Spicy shrimp with peanuts and vegetables',
-            price: 16.99,
-            imageUrl: 'https://picsum.photos/seed/kung-pao/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm9',
-            restaurantId: '2',
-            itemName: 'Beef Lo Mein',
-            description: 'Stir-fried noodles with beef and vegetables',
-            price: 14.99,
-            imageUrl: 'https://picsum.photos/seed/lo-mein/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm10',
-            restaurantId: '2',
-            itemName: 'Spring Rolls',
-            description: 'Crispy vegetable spring rolls with dipping sauce',
-            price: 6.99,
-            imageUrl: 'https://picsum.photos/seed/spring-rolls/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm11',
-            restaurantId: '2',
-            itemName: 'General Tso\'s Chicken',
-            description: 'Crispy chicken in sweet and spicy sauce',
-            price: 15.99,
-            imageUrl: 'https://picsum.photos/seed/general-tsos/300/200',
+            menuId: 'syrian_1_m4',
+            restaurantId: 'syrian_1',
+            itemNameAr: 'منسف',
+            itemNameEn: 'Mansaf',
+            descriptionAr: 'لحم ضأن مع الأرز واللبن',
+            descriptionEn: 'Lamb with rice and yogurt',
+            price: 30.00,
+            imageUrl: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
         ];
 
-      case '3': // Taco Fiesta
+      case 'syrian_2': // مطعم أبو زيد
         return [
           Menu(
-            menuId: 'm12',
-            restaurantId: '3',
-            itemName: 'Beef Tacos',
-            description: 'Three soft tacos with seasoned beef, lettuce, and cheese',
-            price: 11.99,
-            imageUrl: 'https://picsum.photos/seed/beef-tacos/300/200',
+            menuId: 'syrian_2_m1',
+            restaurantId: 'syrian_2',
+            itemNameAr: 'مشاوي مشكلة',
+            itemNameEn: 'Mixed Grill',
+            descriptionAr: 'تشكيلة من المشاوي (كباب، كفتة، شيش طاووق)',
+            descriptionEn: 'Assortment of grilled meats (kebab, kofta, shish tawook)',
+            price: 35.00,
+            imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
           Menu(
-            menuId: 'm13',
-            restaurantId: '3',
-            itemName: 'Chicken Quesadilla',
-            description: 'Grilled chicken with cheese in a flour tortilla',
-            price: 12.99,
-            imageUrl: 'https://picsum.photos/seed/quesadilla/300/200',
+            menuId: 'syrian_2_m2',
+            restaurantId: 'syrian_2',
+            itemNameAr: 'كبسة دجاج',
+            itemNameEn: 'Chicken Kabsa',
+            descriptionAr: 'أرز مع دجاج متبل ومطبوخ بالبهارات',
+            descriptionEn: 'Rice with spiced and cooked chicken',
+            price: 22.00,
+            imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
           Menu(
-            menuId: 'm14',
-            restaurantId: '3',
-            itemName: 'Burrito Bowl',
-            description: 'Rice, beans, chicken, salsa, and guacamole',
-            price: 13.99,
-            imageUrl: 'https://picsum.photos/seed/burrito-bowl/300/200',
+            menuId: 'syrian_2_m3',
+            restaurantId: 'syrian_2',
+            itemNameAr: 'فتوش',
+            itemNameEn: 'Fattoush',
+            descriptionAr: 'سلطة خضار مع الخبز المحمص',
+            descriptionEn: 'Vegetable salad with toasted bread',
+            price: 10.00,
+            imageUrl: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+        ];
+
+      case 'syrian_3': // مطعم الكبابجي
+        return [
+          Menu(
+            menuId: 'syrian_3_m1',
+            restaurantId: 'syrian_3',
+            itemNameAr: 'كباب مشوي',
+            itemNameEn: 'Grilled Kebab',
+            descriptionAr: 'كباب لحم طازج مشوي على الفحم',
+            descriptionEn: 'Fresh meat kebab grilled on charcoal',
+            price: 28.00,
+            imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
           Menu(
-            menuId: 'm15',
-            restaurantId: '3',
-            itemName: 'Nachos Supreme',
-            description: 'Tortilla chips with cheese, jalapeños, and sour cream',
-            price: 10.99,
-            imageUrl: 'https://picsum.photos/seed/nachos/300/200',
+            menuId: 'syrian_3_m2',
+            restaurantId: 'syrian_3',
+            itemNameAr: 'كفتة',
+            itemNameEn: 'Kofta',
+            descriptionAr: 'كفتة لحم مع البصل والبهارات',
+            descriptionEn: 'Meat kofta with onions and spices',
+            price: 24.00,
+            imageUrl: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
           Menu(
-            menuId: 'm16',
-            restaurantId: '3',
-            itemName: 'Churros',
-            description: 'Fried dough pastries with cinnamon sugar',
-            price: 5.99,
-            imageUrl: 'https://picsum.photos/seed/churros/300/200',
+            menuId: 'syrian_3_m3',
+            restaurantId: 'syrian_3',
+            itemNameAr: 'شيش طاووق',
+            itemNameEn: 'Shish Tawook',
+            descriptionAr: 'دجاج مشوي مع الثوم والليمون',
+            descriptionEn: 'Grilled chicken with garlic and lemon',
+            price: 20.00,
+            imageUrl: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+        ];
+
+      case 'syrian_4': // مطعم الفروج المشوي
+        return [
+          Menu(
+            menuId: 'syrian_4_m1',
+            restaurantId: 'syrian_4',
+            itemNameAr: 'فرج مشوي كامل',
+            itemNameEn: 'Whole Grilled Chicken',
+            descriptionAr: 'دجاج كامل مشوي مع البطاطا',
+            descriptionEn: 'Whole grilled chicken with potatoes',
+            price: 32.00,
+            imageUrl: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_4_m2',
+            restaurantId: 'syrian_4',
+            itemNameAr: 'صدر دجاج مشوي',
+            itemNameEn: 'Grilled Chicken Breast',
+            descriptionAr: 'صدر دجاج مشوي مع الأرز',
+            descriptionEn: 'Grilled chicken breast with rice',
+            price: 18.00,
+            imageUrl: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+        ];
+
+      case 'syrian_5': // مطعم الحمص والفلافل
+        return [
+          Menu(
+            menuId: 'syrian_5_m1',
+            restaurantId: 'syrian_5',
+            itemNameAr: 'حمص بالطحينة',
+            itemNameEn: 'Hummus with Tahini',
+            descriptionAr: 'حمص طازج مع الطحينة وزيت الزيتون',
+            descriptionEn: 'Fresh hummus with tahini and olive oil',
+            price: 8.00,
+            imageUrl: 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_5_m2',
+            restaurantId: 'syrian_5',
+            itemNameAr: 'فلافل',
+            itemNameEn: 'Falafel',
+            descriptionAr: 'فلافل مقرمش مع السلطة والطحينة',
+            descriptionEn: 'Crispy falafel with salad and tahini',
+            price: 6.00,
+            imageUrl: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_5_m3',
+            restaurantId: 'syrian_5',
+            itemNameAr: 'مسقعة',
+            itemNameEn: 'Moussaka',
+            descriptionAr: 'باذنجان مع اللحم والطماطم',
+            descriptionEn: 'Eggplant with meat and tomatoes',
+            price: 15.00,
+            imageUrl: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+        ];
+
+      case 'syrian_6': // مطعم المنسف السوري
+        return [
+          Menu(
+            menuId: 'syrian_6_m1',
+            restaurantId: 'syrian_6',
+            itemNameAr: 'منسف لحم',
+            itemNameEn: 'Lamb Mansaf',
+            descriptionAr: 'لحم ضأن مع الأرز واللبن والصنوبر',
+            descriptionEn: 'Lamb with rice, yogurt, and pine nuts',
+            price: 35.00,
+            imageUrl: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_6_m2',
+            restaurantId: 'syrian_6',
+            itemNameAr: 'منسف دجاج',
+            itemNameEn: 'Chicken Mansaf',
+            descriptionAr: 'دجاج مع الأرز واللبن',
+            descriptionEn: 'Chicken with rice and yogurt',
+            price: 25.00,
+            imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+        ];
+
+      case 'syrian_7': // مطعم الفتة والكبسة
+        return [
+          Menu(
+            menuId: 'syrian_7_m1',
+            restaurantId: 'syrian_7',
+            itemNameAr: 'فتة لحم',
+            itemNameEn: 'Meat Fatteh',
+            descriptionAr: 'لحم مع الخبز المحمص واللبن',
+            descriptionEn: 'Meat with toasted bread and yogurt',
+            price: 20.00,
+            imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_7_m2',
+            restaurantId: 'syrian_7',
+            itemNameAr: 'كبسة لحم',
+            itemNameEn: 'Meat Kabsa',
+            descriptionAr: 'أرز مع لحم متبل',
+            descriptionEn: 'Rice with spiced meat',
+            price: 28.00,
+            imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_7_m3',
+            restaurantId: 'syrian_7',
+            itemNameAr: 'فتة دجاج',
+            itemNameEn: 'Chicken Fatteh',
+            descriptionAr: 'دجاج مع الخبز المحمص واللبن',
+            descriptionEn: 'Chicken with toasted bread and yogurt',
+            price: 18.00,
+            imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+        ];
+
+      case 'syrian_8': // مطعم المزة الشامية
+        return [
+          Menu(
+            menuId: 'syrian_8_m1',
+            restaurantId: 'syrian_8',
+            itemNameAr: 'مزة شامية كاملة',
+            itemNameEn: 'Complete Shami Mezze',
+            descriptionAr: 'تشكيلة من المقبلات الشامية (حمص، بابا غنوج، تبولة، فول)',
+            descriptionEn: 'Assortment of Shami appetizers (hummus, baba ganoush, tabbouleh, fava beans)',
+            price: 25.00,
+            imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_8_m2',
+            restaurantId: 'syrian_8',
+            itemNameAr: 'بابا غنوج',
+            itemNameEn: 'Baba Ganoush',
+            descriptionAr: 'باذنجان مشوي مع الطحينة',
+            descriptionEn: 'Grilled eggplant with tahini',
+            price: 10.00,
+            imageUrl: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_8_m3',
+            restaurantId: 'syrian_8',
+            itemNameAr: 'تبولة',
+            itemNameEn: 'Tabbouleh',
+            descriptionAr: 'سلطة برغل مع البقدونس والطماطم',
+            descriptionEn: 'Bulgar salad with parsley and tomatoes',
+            price: 8.00,
+            imageUrl: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=200&fit=crop',
+            availabilityStatus: true,
+          ),
+          Menu(
+            menuId: 'syrian_8_m4',
+            restaurantId: 'syrian_8',
+            itemNameAr: 'فول بالزيت',
+            itemNameEn: 'Fava Beans with Oil',
+            descriptionAr: 'فول مطبوخ مع زيت الزيتون والليمون',
+            descriptionEn: 'Cooked fava beans with olive oil and lemon',
+            price: 7.00,
+            imageUrl: 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=300&h=200&fit=crop',
             availabilityStatus: true,
           ),
         ];
 
       default:
-        // Generic menu for other restaurants
-        return [
-          Menu(
-            menuId: 'm17',
-            restaurantId: restaurantId,
-            itemName: 'Signature Dish',
-            description: 'Our chef\'s special creation',
-            price: 15.99,
-            imageUrl: 'https://picsum.photos/seed/signature/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm18',
-            restaurantId: restaurantId,
-            itemName: 'House Special',
-            description: 'A customer favorite',
-            price: 16.99,
-            imageUrl: 'https://picsum.photos/seed/house-special/300/200',
-            availabilityStatus: true,
-          ),
-          Menu(
-            menuId: 'm19',
-            restaurantId: restaurantId,
-            itemName: 'Chef\'s Choice',
-            description: 'Today\'s recommended dish',
-            price: 17.99,
-            imageUrl: 'https://picsum.photos/seed/chefs-choice/300/200',
-            availabilityStatus: true,
-          ),
-        ];
+        return [];
     }
   }
 }

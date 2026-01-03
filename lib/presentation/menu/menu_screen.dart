@@ -49,6 +49,7 @@ class _MenuScreenState extends State<MenuScreen> {
     final restaurant = viewModel.selectedRestaurant;
     final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
 
+
     return Scaffold(
       appBar: CustomAppBar(
         title: restaurant?.name ?? 'Menu',

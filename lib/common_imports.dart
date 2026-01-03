@@ -93,6 +93,8 @@ export 'package:foody/core/data/local/hive/hive_data_source.dart';
 export 'package:foody/core/data/local/hive/base_local_data.dart';
 export 'package:foody/core/data/local/secure_storage/secure_storage_data_source.dart';
 export 'package:foody/core/data/local/secure_storage/base_secure_local_data.dart';
+export 'package:foody/data/local/app_local_data.dart';
+export 'package:foody/data/model/user/user.dart';
 
 // API Client
 export 'package:foody/core/data/remote/api_client.dart';
@@ -109,7 +111,7 @@ export 'package:foody/core/data/remote/network/connection_info.dart';
 
 // Config
 export 'package:foody/core/config/config.dart';
-export 'package:foody/core/config/hive_init.dart';
+export 'package:foody/core/data/local/hive/hive_init.dart';
 
 // Routing
 export 'package:foody/core/routing/routes.dart';
@@ -126,3 +128,4 @@ export 'package:provider/provider.dart';
 // Services
 export 'package:foody/shared/services/package_info_service.dart';
 
+export 'package:foody/core/api_response/api_response_extensions.dart';

@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:foody/common_imports.dart';
+import 'package:foody/core/config/config.dart';
+import 'package:foody/core/data/local/hive/hive_init.dart';
 import 'package:foody/core/di/di.dart';
 import 'package:foody/core/routing/app_router.dart';
 import 'package:foody/core/routing/navigator_key.dart';
@@ -10,6 +12,12 @@ import 'package:foody/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive and register adapters
+  await initAndRegisterHiveAdapters();
+
+  // Initialize language from storage
+  await AppConfig().initLanguage();
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -41,28 +49,39 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => CartViewModel(),
-      child: MaterialApp(
-        title: 'Foody',
-        theme: defaultThemeData,
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
-        initialRoute: AppRouter.getInitialRoute(),
-        onGenerateRoute: AppRouter.generateRoute,
-        locale: const Locale('en'), // or dynamic
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
+      child: ListenableBuilder(
+        listenable: AppConfig(),
+        builder: (context, _) {
+          return MaterialApp(
+            key: ValueKey(AppConfig().currentLanguageCode), // Force rebuild on language change
+            title: 'Foody',
+            theme: defaultThemeData,
+            debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            initialRoute: AppRouter.getInitialRoute(),
+            onGenerateRoute: AppRouter.generateRoute,
+            locale: AppConfig().currentLocale,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+          );
+        },
       ),
     );
   }

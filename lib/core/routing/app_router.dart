@@ -1,10 +1,13 @@
 import 'package:foody/common_imports.dart';
+import 'package:foody/core/data/remote/firebase/firebase_auth_service.dart';
+import 'package:foody/core/di/di.dart';
 import 'package:foody/presentation/main/main_screen.dart';
 import 'package:foody/presentation/home/home_view_model.dart';
 import 'package:foody/presentation/menu/menu_screen.dart';
 import 'package:foody/presentation/menu/menu_view_model.dart';
 import 'package:foody/presentation/orders/orders_screen.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
+import 'package:foody/presentation/profile/profile_view_model.dart';
 import 'package:foody/presentation/sign_in/sign_in_screen.dart';
 import 'package:foody/presentation/sign_in/sign_in_view_model.dart';
 import 'package:foody/presentation/sign_up/sign_up_screen.dart';
@@ -64,7 +67,11 @@ class AppRouter {
         );
       case Routes.profile:
         return CustomPageRoute(
-          page: const ProfileScreen(),
+          page: provideViewModel<ProfileViewModel>(
+            createViewModel: () => ProfileViewModel(),
+            arguments: arguments,
+            child: const ProfileScreen(),
+          ),
           settings: settings,
         );
       case Routes.cart:
@@ -100,9 +107,12 @@ class AppRouter {
 
   /// Get initial route based on authentication state
   static String getInitialRoute() {
-    // TODO: Check if user is authenticated
-    // For now, always start with sign-in
-    return Routes.signIn;
+    final authService = getIt<FirebaseAuthService>();
+    final currentUser = authService.currentUser;
+    
+    // If user is authenticated, go to main screen
+    // Otherwise, go to sign-in screen
+    return currentUser != null ? Routes.main : Routes.signIn;
   }
 }
 

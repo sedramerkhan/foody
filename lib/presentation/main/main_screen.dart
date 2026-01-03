@@ -3,6 +3,8 @@ import 'package:foody/presentation/home/home_screen.dart';
 import 'package:foody/presentation/home/home_view_model.dart';
 import 'package:foody/presentation/orders/orders_screen.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
+import 'package:foody/presentation/profile/profile_view_model.dart';
+import 'package:foody/shared/utils/navigation/view_model_provider.dart';
 import 'package:foody/shared/widgets/bottom_nav_bar/app_bottom_nav_bar.dart';
 import 'package:flutter_lazy_indexed_stack/flutter_lazy_indexed_stack.dart';
 
@@ -36,7 +38,10 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> screens = [
       const HomeScreen(),
       const OrdersScreen(),
-      const ProfileScreen(),
+      provideViewModel<ProfileViewModel>(
+        createViewModel: () => ProfileViewModel(),
+        child: const ProfileScreen(),
+      ),
     ];
 
     return Scaffold(

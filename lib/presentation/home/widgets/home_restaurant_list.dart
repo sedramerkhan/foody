@@ -17,6 +17,7 @@ class HomeRestaurantList extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(12.w),
       child: GridView.builder(
+        physics: const AlwaysScrollableScrollPhysics(), // Enable pull-to-refresh
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 12.w,
