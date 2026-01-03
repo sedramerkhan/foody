@@ -115,7 +115,7 @@ export 'package:foody/core/config/hive_init.dart';
 export 'package:foody/core/routing/routes.dart';
 
 // Localizations
-export 'package:foody/generated/l10n.dart';
+export 'package:foody/l10n/generated/l10n.dart';
 
 // Navigation
 export 'package:foody/shared/utils/navigation/navigation.dart';

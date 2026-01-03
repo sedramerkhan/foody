@@ -29,20 +29,15 @@ class FirebaseDatabaseService {
   /// final data = await service.read('users/user123');
   /// ```
   Future<ApiResponse<Map<String, dynamic>?>> read(String path) async {
-    print('[FIREBASE_DB] Read called - Path: $path');
     try {
-      print('[FIREBASE_DB] Getting snapshot from Firebase...');
       final snapshot = await ref(path).get();
-      print('[FIREBASE_DB] Snapshot exists: ${snapshot.exists}');
       
       if (!snapshot.exists) {
-        print('[FIREBASE_DB] Path does not exist, returning null');
         return ApiResponse.success(null);
       }
 
       final data = snapshot.value as Map<Object?, Object?>?;
       if (data == null) {
-        print('[FIREBASE_DB] Data is null, returning null');
         return ApiResponse.success(null);
       }
 
@@ -52,11 +47,8 @@ class FirebaseDatabaseService {
         result[key.toString()] = value;
       });
 
-      print('[FIREBASE_DB] Read successful, data: $result');
       return ApiResponse.success(result);
-    } catch (e, stackTrace) {
-      print('[FIREBASE_DB] Read error: $e');
-      print('[FIREBASE_DB] Stack trace: $stackTrace');
+    } catch (e) {
       return ApiResponse.failure(
         message: 'Failed to read data: ${e.toString()}',
       );
@@ -132,16 +124,10 @@ class FirebaseDatabaseService {
     String path,
     Map<String, dynamic> data,
   ) async {
-    print('[FIREBASE_DB] Write called - Path: $path');
-    print('[FIREBASE_DB] Data: $data');
     try {
-      print('[FIREBASE_DB] Setting data to Firebase...');
       await ref(path).set(data);
-      print('[FIREBASE_DB] Data written successfully');
       return ApiResponse.success(null);
-    } catch (e, stackTrace) {
-      print('[FIREBASE_DB] Write error: $e');
-      print('[FIREBASE_DB] Stack trace: $stackTrace');
+    } catch (e) {
       return ApiResponse.failure(
         message: 'Failed to write data: ${e.toString()}',
       );

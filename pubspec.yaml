@@ -157,3 +157,36 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+## auto-generating dart localization files (`intl_utils` pub)
+flutter_intl:
+  enabled: true
+  #class_name: AppLocalization # Optional. Sets the name for the generated localization class. Default: S
+  main_locale: en # Optional. Sets the main locale used for generating localization files. Provided value should consist of language code and optional script and country codes separated with underscore (e.g. 'en', 'en_GB', 'zh_Hans', 'zh_Hans_CN'). Default: en
+  arb_dir: lib/l10n # Optional. Sets the directory of your ARB resource files. Provided value should be a valid path on your system. Default: lib/l10n
+  output_dir: lib/l10n/generated # Optional. Sets the directory of generated localization files. Provided value should be a valid path on your system. Default: lib/generated
+  use_deferred_loading: false # Optional. Must be set to true to generate localization code that is loaded with deferred loading. Default: false
+
+## asset auto-generation
+flutter_gen:
+  output: lib/shared/generated/assets
+  integrations:
+    flutter_svg: true
+
+
+
+## shortcut commands
+## if rps it is not installed yet run this -> dart pub global activate rps
+## to run command just type rps and the name of the script
+## ex: rps clean
+## ex: rps gen
+scripts:
+  clean: "fvm flutter clean"
+  local: "flutter --no-color pub global run intl_utils:generate"
+  gen: "fvm dart run build_runner build --delete-conflicting-outputs"
+  launcherIcon: "flutter pub run flutter_launcher_icons"
+  check: "dart fix --dry-run"
+  fix: "dart fix --apply"
+  ## Change the package name every project
+  uninstall: "adb uninstall com.sm.foody"
+  disConn: "adb disconnect"
