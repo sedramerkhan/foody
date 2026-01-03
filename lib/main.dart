@@ -4,6 +4,7 @@ import 'package:foody/common_imports.dart';
 import 'package:foody/core/di/di.dart';
 import 'package:foody/core/routing/app_router.dart';
 import 'package:foody/core/routing/navigator_key.dart';
+import 'package:foody/presentation/cart/cart_view_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,21 +39,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Foody',
-      theme: defaultThemeData,
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey,
-      initialRoute: AppRouter.getInitialRoute(),
-      onGenerateRoute: AppRouter.generateRoute,
-      locale: const Locale('en'), // or dynamic
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
+    return ChangeNotifierProvider(
+      create: (_) => CartViewModel(),
+      child: MaterialApp(
+        title: 'Foody',
+        theme: defaultThemeData,
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        initialRoute: AppRouter.getInitialRoute(),
+        onGenerateRoute: AppRouter.generateRoute,
+        locale: const Locale('en'), // or dynamic
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+      ),
     );
   }
 }
