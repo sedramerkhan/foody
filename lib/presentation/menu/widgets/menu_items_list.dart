@@ -4,13 +4,13 @@ import 'package:foody/presentation/menu/widgets/menu_item_card.dart';
 
 class MenuItemsList extends StatelessWidget {
   final List<Menu> menuItems;
-  final ValueChanged<Menu>? onItemTap;
+  final ValueChanged<Menu> onItemTap;
   final ValueChanged<Menu>? onAddToCart;
 
   const MenuItemsList({
     super.key,
     required this.menuItems,
-    this.onItemTap,
+    required this.onItemTap,
     this.onAddToCart,
   });
 
@@ -23,7 +23,7 @@ class MenuItemsList extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 12.h),
         child: MenuItemCard(
           menuItem: menuItems[index],
-          onTap:()=> onItemTap!(menuItems[index]) ,
+          onTap:()=> onItemTap(menuItems[index]) ,
           onAddToCart: onAddToCart != null
               ? () => onAddToCart!(menuItems[index])
               : null,

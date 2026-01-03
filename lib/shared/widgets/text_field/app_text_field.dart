@@ -114,8 +114,10 @@ class _AppTextFieldState extends State<AppTextField> {
           ),
         ),
         SizedBox(
-          height: 14.h,
+          height: 16.h,
+          width: double.infinity,
           child: Column(
+            crossAxisAlignment: .start,
             children: [
               if (widget.config.showErrorText && _errorMessage != null) ...[
                 AppText(

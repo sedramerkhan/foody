@@ -20,4 +20,12 @@ void registerSingleton() {
 
 
   _registerLazySingletonHelper<AppLocalData>(()=> AppLocalData());
+  
+  // Repositories
+  _registerLazySingletonHelper<OrderRepo>(() => OrderRepo());
+  _registerLazySingletonHelper<OrderItemRepo>(() => OrderItemRepo());
+  _registerLazySingletonHelper<PaymentRepo>(() => PaymentRepo());
+  _registerLazySingletonHelper<DeliveryRepo>(() => DeliveryRepo());
+  _registerLazySingletonHelper<DriverRepo>(() => DriverRepo());
+  _registerLazySingletonHelper<CartRepo>(() => CartRepo());
 }

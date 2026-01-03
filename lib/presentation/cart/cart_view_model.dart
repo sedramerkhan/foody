@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:foody/common_imports.dart';
-import 'package:foody/data/model/cart/cart_item.dart';
 import 'package:foody/data/model/menu/menu.dart';
 import 'package:foody/data/model/restaurant/restaurant.dart';
+import 'package:foody/data/repo/cart_repo.dart';
 
 class CartViewModel extends BaseViewModel {
+  final CartRepo _cartRepo = CartRepo();
   final List<CartItem> _items = [];
   Restaurant? _restaurant;
+  bool _isInitialized = false;
 
   List<CartItem> get items => List.unmodifiable(_items);
   Restaurant? get restaurant => _restaurant;
@@ -15,6 +17,38 @@ class CartViewModel extends BaseViewModel {
   double get totalAmount => _items.fold(0.0, (sum, item) => sum + item.totalPrice);
   bool get isEmpty => _items.isEmpty;
   bool get isNotEmpty => _items.isNotEmpty;
+
+  /// Initialize cart from local storage
+  Future<void> init() async {
+    if (_isInitialized) return;
+    
+    try {
+      final response = await _cartRepo.getCart();
+      if (response.isSuccess) {
+        final cartData = response.getDataOrNull() ?? CartData.empty();
+        _items.clear();
+        _items.addAll(cartData.items);
+        _restaurant = cartData.restaurant;
+      }
+      _isInitialized = true;
+      notifyListeners();
+    } catch (e) {
+      _isInitialized = true;
+    }
+  }
+
+  /// Save cart to local storage
+  Future<void> _saveCart() async {
+    try {
+      final cartData = CartData(
+        items: List.from(_items),
+        restaurant: _restaurant,
+      );
+      await _cartRepo.saveCart(cartData);
+    } catch (e) {
+      // Silently fail - cart saving shouldn't block UI
+    }
+  }
 
   /// Add item to cart
   void addItem(Menu menuItem, Restaurant restaurant) {
@@ -41,6 +75,7 @@ class CartViewModel extends BaseViewModel {
     }
     
     notifyListeners();
+    _saveCart();
   }
 
   /// Remove item from cart
@@ -50,6 +85,7 @@ class CartViewModel extends BaseViewModel {
       _restaurant = null;
     }
     notifyListeners();
+    _saveCart();
   }
 
   /// Update item quantity
@@ -69,6 +105,7 @@ class CartViewModel extends BaseViewModel {
         quantity: quantity,
       );
       notifyListeners();
+      _saveCart();
     }
   }
 
@@ -77,6 +114,7 @@ class CartViewModel extends BaseViewModel {
     _items.clear();
     _restaurant = null;
     notifyListeners();
+    _cartRepo.clearCart();
   }
 
   /// Get quantity for a specific menu item

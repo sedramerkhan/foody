@@ -60,7 +60,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => CartViewModel(),
+      create: (_) {
+        final cartViewModel = CartViewModel();
+        // Initialize cart from storage asynchronously
+        cartViewModel.init();
+        return cartViewModel;
+      },
       child: ListenableBuilder(
         listenable: AppConfig(),
         builder: (context, _) {

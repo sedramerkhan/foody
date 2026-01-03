@@ -96,7 +96,28 @@
   },
   "ordersOrders": "Orders",
   "ordersComingSoon": "Orders Coming Soon",
-  "ordersOrderHistoryWillAppearHere": "Your order history will appear here"
+  "ordersOrderHistoryWillAppearHere": "Your order history will appear here",
+  "ordersUpcoming": "Upcoming",
+  "ordersHistory": "History",
+  "ordersOrderPlaced": "Order Placed",
+  "ordersOrderConfirmed": "Confirmed",
+  "ordersOrderDelivered": "Delivered",
+  "ordersOrderCanceled": "Canceled",
+  "ordersDeliveryAssigned": "Assigned",
+  "ordersDeliveryOnTheWay": "On The Way",
+  "ordersDeliveryDelivered": "Delivered",
+  "ordersTotal": "Total",
+  "ordersItems": "Items",
+  "ordersDate": "Date",
+  "ordersNoUpcomingOrders": "No upcoming orders",
+  "ordersNoHistoryOrders": "No order history",
+  "profileAddFakeDrivers": "Add Fake Drivers",
+  "profileAddFakePayments": "Add Fake Payments",
+  "profileDriversAddedSuccessfully": "Drivers added successfully!",
+  "profilePaymentsAddedSuccessfully": "Payments added successfully!",
+  "checkoutPlacingOrder": "Placing Order...",
+  "thisFieldIsRequired": "This field is required",
+  "pleaseEnterAValidEmailAddress": "Please enter a valid email address"
 }
 
 

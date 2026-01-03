@@ -2,6 +2,7 @@ import 'package:foody/common_imports.dart';
 import 'package:foody/presentation/home/home_screen.dart';
 import 'package:foody/presentation/home/home_view_model.dart';
 import 'package:foody/presentation/orders/orders_screen.dart';
+import 'package:foody/presentation/orders/orders_view_model.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
 import 'package:foody/presentation/profile/profile_view_model.dart';
 import 'package:foody/shared/utils/navigation/view_model_provider.dart';
@@ -37,7 +38,10 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       const HomeScreen(),
-      const OrdersScreen(),
+      provideViewModel<OrdersViewModel>(
+        createViewModel: () => OrdersViewModel(),
+        child: const OrdersScreen(),
+      ),
       provideViewModel<ProfileViewModel>(
         createViewModel: () => ProfileViewModel(),
         child: const ProfileScreen(),

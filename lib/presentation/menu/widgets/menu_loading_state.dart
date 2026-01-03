@@ -1,5 +1,6 @@
 import 'package:foody/common_imports.dart';
-import 'package:foody/presentation/menu/widgets/menu_item_card_skeleton.dart';
+
+import 'menu_item_card.dart';
 
 class MenuLoadingState extends StatelessWidget {
   const MenuLoadingState({super.key});

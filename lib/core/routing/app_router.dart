@@ -6,6 +6,7 @@ import 'package:foody/presentation/home/home_view_model.dart';
 import 'package:foody/presentation/menu/menu_screen.dart';
 import 'package:foody/presentation/menu/menu_view_model.dart';
 import 'package:foody/presentation/orders/orders_screen.dart';
+import 'package:foody/presentation/orders/orders_view_model.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
 import 'package:foody/presentation/profile/profile_view_model.dart';
 import 'package:foody/presentation/sign_in/sign_in_screen.dart';
@@ -62,7 +63,11 @@ class AppRouter {
         );
       case Routes.orders:
         return CustomPageRoute(
-          page: const OrdersScreen(),
+          page: provideViewModel<OrdersViewModel>(
+            createViewModel: () => OrdersViewModel(),
+            arguments: arguments,
+            child: const OrdersScreen(),
+          ),
           settings: settings,
         );
       case Routes.profile:

@@ -25,7 +25,7 @@ class _MenuScreenState extends State<MenuScreen> {
       final args = getRouteArgs(context);
       final restaurant = args?['restaurant'] as Restaurant?;
       final viewModel = Provider.of<MenuViewModel>(context, listen: false);
-      
+
       if (restaurant != null) {
         viewModel.setRestaurant(restaurant);
         viewModel.loadMenuItems();
@@ -33,7 +33,11 @@ class _MenuScreenState extends State<MenuScreen> {
     });
   }
 
-  void _handleAddToCart(Menu menuItem, Restaurant restaurant, CartViewModel cartViewModel) {
+  void _handleAddToCart(
+    Menu menuItem,
+    Restaurant restaurant,
+    CartViewModel cartViewModel,
+  ) {
     final l10n = S.current;
     cartViewModel.addItem(menuItem, restaurant);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -51,11 +55,8 @@ class _MenuScreenState extends State<MenuScreen> {
     final restaurant = viewModel.selectedRestaurant;
     final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
 
-
     return Scaffold(
-      appBar: CustomAppBar(
-        title: restaurant?.name ?? l10n.menuMenu,
-      ),
+      appBar: CustomAppBar(title: restaurant?.name ?? l10n.menuMenu),
       body: SafeArea(
         child: restaurant == null
             ? const MenuNoRestaurantState()
@@ -65,19 +66,20 @@ class _MenuScreenState extends State<MenuScreen> {
                 onSuccess: (menuItems) => MenuItemsList(
                   menuItems: menuItems,
                   onAddToCart: restaurant != null
-                      ? (menuItem) => _handleAddToCart(menuItem, restaurant, cartViewModel)
+                      ? (menuItem) => _handleAddToCart(
+                          menuItem,
+                          restaurant,
+                          cartViewModel,
+                        )
                       : null,
+                  onItemTap: (Menu value) {},
                 ),
-                onError: (message) => MenuErrorState(
-                  message: message,
-                  viewModel: viewModel,
-                ),
+                onError: (message) =>
+                    MenuErrorState(message: message, viewModel: viewModel),
                 empty: const MenuEmptyState(),
                 onTryAgain: () => viewModel.loadMenuItems(),
               ),
       ),
     );
   }
-
 }
-

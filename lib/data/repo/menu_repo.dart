@@ -22,7 +22,8 @@ class MenuRepo extends BaseRepository {
     
     try {
       final menuItems = menuList
-          .map((json) => Menu.fromJson(json))
+          .where((json) => json is Map<String, dynamic>)
+          .map((json) => Menu.fromJson(json as Map<String, dynamic>))
           .toList();
       return ApiResponse.success(menuItems);
     } catch (e) {

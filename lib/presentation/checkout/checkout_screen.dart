@@ -154,16 +154,27 @@ class CheckoutScreen extends StatelessWidget {
                   GapH(32.h),
                   // Place Order Button
                   AppButton(
-                    text: l10n.checkoutPlaceOrder,
+                    text: checkoutViewModel.isPlacingOrder
+                        ? l10n.checkoutPlacingOrder
+                        : l10n.checkoutPlaceOrder,
                     config: AppButtonConfig(
                       onPressed: checkoutViewModel.canPlaceOrder
-                          ? () {
-                              // TODO: Place order
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.checkoutOrderPlacedSuccessfully),
-                                ),
-                              );
+                          ? () async {
+                              final response = await checkoutViewModel.placeOrder();
+                              
+                              if (!context.mounted) return;
+
+                              ApiResponseHandler.handle(context: context, result: response, onSuccess: (_){
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(l10n.checkoutOrderPlacedSuccessfully),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                                // Navigate to orders screen
+                                Navigator.of(context).pushReplacementNamed(Routes.orders);
+                              });
+
                             }
                           : null,
                     ),

@@ -1,3 +1,5 @@
+import 'package:foody/l10n/generated/l10n.dart';
+
 /// A collection of reusable text field validators for common validation patterns.
 /// 
 /// These validators can be composed together to create complex validation rules.
@@ -8,7 +10,7 @@ class Validators {
   /// Validates that a field is not empty
   static String? required(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'This field is required';
+      return S.current.thisFieldIsRequired;
     }
     return null;
   }
@@ -32,7 +34,7 @@ class Validators {
     );
 
     if (!emailRegex.hasMatch(value)) {
-      return 'Please enter a valid email address';
+      return S.current.pleaseEnterAValidEmailAddress;
     }
     return null;
   }

@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:foody/common_imports.dart';
 import 'package:foody/core/api_response/api_response_state/api_response_state.dart';
 
 /// Service for interacting with Firebase Realtime Database
@@ -128,6 +129,7 @@ class FirebaseDatabaseService {
       await ref(path).set(data);
       return ApiResponse.success(null);
     } catch (e) {
+      printColored("Failed to write data $e");
       return ApiResponse.failure(
         message: 'Failed to write data: ${e.toString()}',
       );

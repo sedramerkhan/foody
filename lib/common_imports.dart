@@ -95,6 +95,19 @@ export 'package:foody/core/data/local/secure_storage/secure_storage_data_source.
 export 'package:foody/core/data/local/secure_storage/base_secure_local_data.dart';
 export 'package:foody/data/local/app_local_data.dart';
 export 'package:foody/data/model/user/user.dart';
+export 'package:foody/data/model/cart/cart_data.dart';
+export 'package:foody/data/model/cart/cart_item.dart';
+export 'package:foody/data/model/order/order.dart';
+export 'package:foody/data/model/order_item/order_item.dart';
+export 'package:foody/data/model/payment/payment.dart';
+export 'package:foody/data/model/delivery/delivery.dart';
+export 'package:foody/data/model/driver/driver.dart';
+export 'package:foody/data/repo/order_repo.dart';
+export 'package:foody/data/repo/order_item_repo.dart';
+export 'package:foody/data/repo/payment_repo.dart';
+export 'package:foody/data/repo/delivery_repo.dart';
+export 'package:foody/data/repo/driver_repo.dart';
+export 'package:foody/data/repo/cart_repo.dart';
 
 // API Client
 export 'package:foody/core/data/remote/api_client.dart';
