@@ -92,6 +92,9 @@ dependencies:
   ## Stepper
   easy_stepper: 0.9.1
 
+  ## Rating Bar
+  flutter_rating_bar: 4.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
