@@ -111,3 +111,90 @@ ThemeData defaultThemeData = ThemeData(
   hintColor: AppColors.textPrimary,
 );
 
+/// Dark Theme Data
+/// Note: Uses AppColors private dark color helpers since ThemeColors is not accessible here
+ThemeData darkThemeData = ThemeData(
+  fontFamily: defaultFontFamily,
+  splashColor: Colors.transparent,
+  scaffoldBackgroundColor: AppColors.darkBgSurface,
+  useMaterial3: true,
+  pageTransitionsTheme: const PageTransitionsTheme(),
+
+  /// Date Picker
+  datePickerTheme: DatePickerThemeData(
+    headerHeadlineStyle: ThemeTextStyle.fromTypography(
+      typography: AppTypography.headingXSmallBold,
+      color: AppColors.darkTextPrimary,
+    ).materialTextStyle,
+    weekdayStyle: ThemeTextStyle.fromTypography(
+      typography: AppTypography.bodyMediumMedium,
+      color: AppColors.brand500,
+    ).materialTextStyle,
+    dayStyle: ThemeTextStyle.fromTypography(
+      typography: AppTypography.bodyMediumRegular,
+      color: AppColors.darkTextSecondaryAlt,
+    ).materialTextStyle,
+    yearStyle: ThemeTextStyle.fromTypography(
+      typography: AppTypography.bodyMediumRegular,
+      color: AppColors.darkTextSecondaryAlt,
+    ).materialTextStyle,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(25.0),
+    ),
+  ),
+  timePickerTheme: TimePickerThemeData(
+    backgroundColor: AppColors.darkBgSurface,
+    dialHandColor: AppColors.brand300,
+    dialBackgroundColor: Colors.transparent,
+  ),
+
+  /// Color Scheme - Dark Theme
+  colorScheme: ColorScheme(
+    brightness: Brightness.dark,
+    primary: AppColors.brand500, // Keep brand colors the same
+    onPrimary: Colors.white,
+    secondary: AppColors.secondary500,
+    onSecondary: AppColors.black,
+    tertiary: AppColors.success500,
+    error: AppColors.red500,
+    onError: Colors.white,
+    surface: AppColors.darkBgSurface,
+    onSurface: AppColors.darkTextPrimary,
+    outline: AppColors.darkBorderPrimary,
+  ),
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: AppColors.brand600,
+    selectionHandleColor: Colors.transparent,
+  ),
+
+  /// Chip Theme
+  chipTheme: ChipThemeData(
+    backgroundColor: AppColors.darkBgSurfaceSecondary,
+    labelStyle: TextStyle(
+      color: AppColors.darkTextPrimary,
+      fontSize: AppFontSize.s16,
+      fontWeight: AppFontWeight.semiBold600,
+    ),
+    selectedColor: AppColors.brand500,
+  ),
+
+  /// Input Decoration Theme
+  inputDecorationTheme: InputDecorationTheme(
+    floatingLabelBehavior: FloatingLabelBehavior.never,
+    fillColor: AppColors.darkBgSurfaceSecondary,
+    filled: true,
+    focusColor: AppColors.brand500,
+    hintStyle: TextStyle(
+      color: AppColors.darkTextPrimary,
+      fontSize: AppFontSize.s14,
+      fontWeight: AppFontWeight.regular400,
+    ),
+    errorStyle: TextStyle(
+      color: AppColors.red500,
+      fontWeight: AppFontWeight.medium500,
+      fontSize: AppFontSize.s10,
+    ),
+  ),
+  hintColor: AppColors.darkTextPrimary,
+);
+

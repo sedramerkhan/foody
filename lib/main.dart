@@ -16,22 +16,16 @@ Future<void> main() async {
   // Initialize Hive and register adapters
   await initAndRegisterHiveAdapters();
 
-  // Initialize language from storage
+  // Initialize language and theme mode from storage
   await AppConfig().initLanguage();
+  await AppConfig().initThemeMode();
 
   // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
-    ),
-  );
+  // System UI overlay style will be set dynamically based on theme
 
   // Orientation: Portrait
   SystemChrome.setPreferredOrientations([
@@ -69,15 +63,30 @@ class _MyAppState extends State<MyApp> {
       child: ListenableBuilder(
         listenable: AppConfig(),
         builder: (context, _) {
+          final appConfig = AppConfig();
+          final isDarkMode = appConfig.isDark(context);
+          
+          // Update system UI overlay style based on theme
+          SystemChrome.setSystemUIOverlayStyle(
+            SystemUiOverlayStyle(
+              systemNavigationBarColor: isDarkMode ? AppColors.bgSurface : Colors.white,
+              systemNavigationBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+              statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+              statusBarColor: Colors.transparent,
+            ),
+          );
+          
           return MaterialApp(
-            key: ValueKey(AppConfig().currentLanguageCode), // Force rebuild on language change
+            key: ValueKey('${appConfig.currentLanguageCode}_${appConfig.themeModeString}'), // Force rebuild on language/theme change
             title: 'Foody',
             theme: defaultThemeData,
+            darkTheme: darkThemeData,
+            themeMode: appConfig.themeMode,
             debugShowCheckedModeBanner: false,
             navigatorKey: navigatorKey,
             initialRoute: AppRouter.getInitialRoute(),
             onGenerateRoute: AppRouter.generateRoute,
-            locale: AppConfig().currentLocale,
+            locale: appConfig.currentLocale,
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,

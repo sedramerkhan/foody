@@ -56,9 +56,31 @@ enum ThemeColors {
   // ------ Success Colors -------
   success50(color: Color(0xFFE8F5E9)), // Pale green
   success500(color: Color(0xFF4CAF50)), // Success green
-  success700(color: Color(0xFF2E7D32)); // Dark green
+  success700(color: Color(0xFF2E7D32)), // Dark green
 
-
+  // ------- Dark Mode Colors -------
+  darkBgSurface(color: Color(0xFF121212)), // Material dark surface
+  darkBgSurfaceSecondary(color: Color(0xFF1E1E1E)), // Slightly lighter dark surface
+  darkTextPrimary(color: Color(0xFFE0E0E0)), // Light text for dark mode
+  darkTextPrimaryAlt(color: Color(0xFFB0B0B0)), // Lighter text variant
+  darkTextSecondary(color: Color(0xFF9E9E9E)), // Secondary text
+  darkTextSecondaryAlt(color: Color(0xFFF5F5F5)), // Very light text
+  darkBorderPrimary(color: Color(0xFF424242)), // Dark borders
+  darkBorderSecondary(color: Color(0xFF616161)), // Lighter dark borders
+  darkIconPrimary(color: Color(0xFFE0E0E0)), // Light icons
+  darkIconPrimaryAlt(color: Color(0xFFB0B0B0)), // Lighter icons
+  darkBgFillPrimary(color: Color(0xFF1E1E1E)), // Dark fill primary
+  darkBgFillSecondary(color: Color(0xFF2C2C2C)), // Dark fill secondary
+  darkGrey50(color: Color(0xFF121212)), // Darkest grey
+  darkGrey100(color: Color(0xFF1E1E1E)), // Very dark grey
+  darkGrey200(color: Color(0xFF2C2C2C)), // Dark grey
+  darkGrey300(color: Color(0xFF424242)), // Medium dark grey
+  darkGrey400(color: Color(0xFF616161)), // Lighter dark grey
+  darkGrey500(color: Color(0xFF757575)), // Light dark grey
+  darkGrey600(color: Color(0xFF9E9E9E)), // Lighter grey
+  darkGrey700(color: Color(0xFFB0B0B0)), // Light grey
+  darkGrey800(color: Color(0xFFE0E0E0)), // Very light grey
+  darkGrey900(color: Color(0xFFF5F5F5)); // Almost white
 
   const ThemeColors({required this.color});
 

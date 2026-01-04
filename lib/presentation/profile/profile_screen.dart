@@ -97,6 +97,62 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
+              // Theme Mode Selector
+              Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: AppColors.bgSurfaceSecondary,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppText(
+                      l10n.profileTheme,
+                      typography: AppTypography.bodyMediumSemiBold,
+                      color: AppColors.textPrimary,
+                    ),
+                    GapH(12.h),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _ThemeModeButton(
+                            label: l10n.profileLight,
+                            mode: 'light',
+                            isSelected: AppConfig().themeModeString == 'light',
+                            onPressed: () async {
+                              await AppConfig().setThemeMode('light');
+                            },
+                          ),
+                        ),
+                        GapW(8.w),
+                        Expanded(
+                          child: _ThemeModeButton(
+                            label: l10n.profileDark,
+                            mode: 'dark',
+                            isSelected: AppConfig().themeModeString == 'dark',
+                            onPressed: () async {
+                              await AppConfig().setThemeMode('dark');
+                            },
+                          ),
+                        ),
+                        GapW(8.w),
+                        Expanded(
+                          child: _ThemeModeButton(
+                            label: l10n.profileSystem,
+                            mode: 'system',
+                            isSelected: AppConfig().themeModeString == 'system',
+                            onPressed: () async {
+                              await AppConfig().setThemeMode('system');
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
               PrimaryButton(
                 onPressed: () async {
                   await viewModel.addSyrianRestaurants();
@@ -192,6 +248,50 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ThemeModeButton extends StatelessWidget {
+  final String label;
+  final String mode;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  const _ThemeModeButton({
+    required this.label,
+    required this.mode,
+    required this.isSelected,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: AppConfig(),
+      builder: (context, _) {
+        return GestureDetector(
+          onTap: onPressed,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+            decoration: BoxDecoration(
+              color: isSelected ? AppColors.bgFillBrand : AppColors.bgSurfaceSecondary,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(
+                color: isSelected ? AppColors.borderBrand : AppColors.borderPrimary,
+                width: 1,
+              ),
+            ),
+            child: Center(
+              child: AppText(
+                label,
+                typography: AppTypography.bodySmallMedium,
+                color: isSelected ? AppColors.textOnBrand : AppColors.textPrimary,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
