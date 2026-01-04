@@ -59,7 +59,6 @@ class ProfileViewModel extends BaseViewModel {
   }
 
 
-
   @override
   void dispose() {
     addRestaurantsResponse.dispose();

@@ -17,6 +17,7 @@ import 'package:foody/presentation/sign_up/sign_up_screen.dart';
 import 'package:foody/presentation/sign_up/sign_up_view_model.dart';
 import 'package:foody/presentation/cart/cart_screen.dart';
 import 'package:foody/presentation/checkout/checkout_screen.dart';
+import 'package:foody/presentation/settings/settings_screen.dart';
 
 /// Application router that handles navigation and route generation
 class AppRouter {
@@ -118,6 +119,15 @@ class AppRouter {
             createViewModel: () => SignUpViewModel(),
             arguments: arguments,
             child: const SignUpScreen(),
+          ),
+          settings: settings,
+        );
+      case Routes.settings:
+        return CustomPageRoute(
+          page: provideViewModel<ProfileViewModel>(
+            createViewModel: () => ProfileViewModel(),
+            arguments: arguments,
+            child: const SettingsScreen(),
           ),
           settings: settings,
         );

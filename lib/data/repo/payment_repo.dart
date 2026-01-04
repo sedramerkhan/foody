@@ -100,4 +100,56 @@ class PaymentRepo extends BaseRepository {
       );
     }
   }
+
+  /// Generate fake payments for testing
+  static List<Payment> getFakePayments() {
+    final now = DateTime.now();
+    return [
+      Payment(
+        paymentId: 'payment_1',
+        orderId: 'order_1',
+        paymentMethod: PaymentMethod.card,
+        paymentStatus: PaymentStatus.completed,
+        transactionId: 'txn_123456789',
+        amount: 25.99,
+        paidAt: now.subtract(const Duration(days: 1)),
+      ),
+      Payment(
+        paymentId: 'payment_2',
+        orderId: 'order_2',
+        paymentMethod: PaymentMethod.cash,
+        paymentStatus: PaymentStatus.completed,
+        transactionId: null,
+        amount: 18.50,
+        paidAt: now.subtract(const Duration(hours: 12)),
+      ),
+      Payment(
+        paymentId: 'payment_3',
+        orderId: 'order_3',
+        paymentMethod: PaymentMethod.paypal,
+        paymentStatus: PaymentStatus.completed,
+        transactionId: 'pp_987654321',
+        amount: 32.75,
+        paidAt: now.subtract(const Duration(hours: 6)),
+      ),
+      Payment(
+        paymentId: 'payment_4',
+        orderId: 'order_4',
+        paymentMethod: PaymentMethod.card,
+        paymentStatus: PaymentStatus.pending,
+        transactionId: 'txn_111222333',
+        amount: 15.00,
+        paidAt: null,
+      ),
+      Payment(
+        paymentId: 'payment_5',
+        orderId: 'order_5',
+        paymentMethod: PaymentMethod.cash,
+        paymentStatus: PaymentStatus.completed,
+        transactionId: null,
+        amount: 42.30,
+        paidAt: now.subtract(const Duration(minutes: 30)),
+      ),
+    ];
+  }
 }
