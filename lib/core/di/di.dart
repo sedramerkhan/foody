@@ -32,4 +32,5 @@ void registerSingleton() {
   _registerLazySingletonHelper<CartRepo>(() => CartRepo());
   _registerLazySingletonHelper<RestaurantRepo>(() => RestaurantRepo());
   _registerLazySingletonHelper<MenuRepo>(() => MenuRepo());
+  _registerLazySingletonHelper<ReviewRepo>(() => ReviewRepo());
 }

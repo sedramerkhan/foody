@@ -33,27 +33,25 @@ class ReviewSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppText(
-                l10n.reviewYourReview,
-                typography: AppTypography.headingSmallBold,
-                color: AppColors.textPrimary,
-              ),
-              if (orderDetails.canReview)
-                PrimaryButton(
-                  text: l10n.reviewLeaveAReview,
-                  onPressed: () async {
-                    final result = await showReviewBottomSheet(context, orderDetails.order.orderId);
-                    if (result == true) {
-                      // Reload order details to show the new review
-                      viewModel.loadOrderDetails(orderDetails.order.orderId);
-                    }
-                  },
-                ),
-            ],
+          AppText(
+            l10n.reviewYourReview,
+            typography: AppTypography.headingSmallBold,
+            color: AppColors.textPrimary,
           ),
+          if (orderDetails.canReview) ...[
+            GapH(16.h),
+            PrimaryButton(
+              text: l10n.reviewLeaveAReview,
+              onPressed: () async {
+                final result = await showReviewBottomSheet(context, orderDetails.order.orderId);
+                if (result == true) {
+                  // Reload order details to show the new review
+                  viewModel.loadOrderDetails(orderDetails.order.orderId);
+                }
+              },
+            ),
+            GapH(16.h),
+          ],
           if (review != null) ...[
             GapH(16.h),
             Row(

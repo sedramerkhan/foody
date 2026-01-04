@@ -9,6 +9,10 @@ enum OrderStatus {
   pending,
   @JsonValue('confirmed')
   confirmed,
+  @JsonValue('preparing')
+  preparing,
+  @JsonValue('on_the_way')
+  onTheWay,
   @JsonValue('delivered')
   delivered,
   @JsonValue('canceled')
@@ -24,6 +28,10 @@ extension OrderStatusExtension on OrderStatus {
         return l10n.ordersOrderPlaced;
       case OrderStatus.confirmed:
         return l10n.ordersOrderConfirmed;
+      case OrderStatus.preparing:
+        return l10n.ordersPreparing;
+      case OrderStatus.onTheWay:
+        return l10n.ordersOnTheWay;
       case OrderStatus.delivered:
         return l10n.ordersOrderDelivered;
       case OrderStatus.canceled:

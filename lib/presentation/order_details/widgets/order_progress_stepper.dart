@@ -21,8 +21,8 @@ class OrderProgressStepper extends StatelessWidget {
     final steps = [
       OrderStatus.pending.getMessage(),
       OrderStatus.confirmed.getMessage(),
-      DeliveryStatus.assigned.getMessage(),
-      DeliveryStatus.onTheWay.getMessage(),
+      OrderStatus.preparing.getMessage(),
+      OrderStatus.onTheWay.getMessage(),
       OrderStatus.delivered.getMessage(),
     ];
 

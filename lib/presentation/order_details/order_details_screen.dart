@@ -1,14 +1,15 @@
 import 'package:foody/common_imports.dart';
 import 'package:foody/presentation/order_details/order_details_view_model.dart';
-import 'package:foody/shared/widgets/app_bar/custom_app_bar.dart';
-import 'package:foody/presentation/order_details/widgets/order_progress_stepper.dart';
+import 'package:foody/presentation/order_details/widgets/delivery_section.dart';
 import 'package:foody/presentation/order_details/widgets/order_canceled_message.dart';
+import 'package:foody/presentation/order_details/widgets/order_details_empty_state.dart';
+import 'package:foody/presentation/order_details/widgets/order_details_error_state.dart';
 import 'package:foody/presentation/order_details/widgets/order_info_card.dart';
 import 'package:foody/presentation/order_details/widgets/order_items_section.dart';
+import 'package:foody/presentation/order_details/widgets/order_progress_stepper.dart';
 import 'package:foody/presentation/order_details/widgets/payment_section.dart';
-import 'package:foody/presentation/order_details/widgets/delivery_section.dart';
-import 'package:foody/presentation/order_details/widgets/order_details_error_state.dart';
-import 'package:foody/presentation/order_details/widgets/order_details_empty_state.dart';
+import 'package:foody/presentation/order_details/widgets/review_section.dart';
+import 'package:foody/shared/widgets/app_bar/custom_app_bar.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final String orderId;
@@ -54,6 +55,7 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildOrderDetails(BuildContext context, OrderDetails orderDetails, OrderDetailsViewModel viewModel) {
+    final l10n = S.current;
     final order = orderDetails.order;
     final isCanceled = order.orderStatus == OrderStatus.canceled;
 
@@ -65,7 +67,7 @@ class OrderDetailsScreen extends StatelessWidget {
           // Order Info Card
           OrderInfoCard(orderDetails: orderDetails),
           GapH(24.h),
-          
+
           // Order Progress Stepper (only show if not canceled)
           if (!isCanceled) ...[
             OrderProgressStepper(
@@ -90,6 +92,16 @@ class OrderDetailsScreen extends StatelessWidget {
           // Delivery Info
           if (orderDetails.delivery != null)
             DeliverySection(orderDetails: orderDetails),
+          if (orderDetails.delivery != null) GapH(24.h),
+
+          // Review Section (only for delivered orders)
+          if (orderDetails.order.orderStatus == OrderStatus.delivered)
+            ReviewSection(
+              orderDetails: orderDetails,
+              viewModel: viewModel,
+            ),
+
+          GapH(30.h)
         ],
       ),
     );

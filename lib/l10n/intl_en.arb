@@ -138,7 +138,18 @@
   "profilePaymentsAddedSuccessfully": "Payments added successfully!",
   "checkoutPlacingOrder": "Placing Order...",
   "thisFieldIsRequired": "This field is required",
-  "pleaseEnterAValidEmailAddress": "Please enter a valid email address"
+  "pleaseEnterAValidEmailAddress": "Please enter a valid email address",
+  "reviewLeaveAReview": "Leave a Review",
+  "reviewHowWasYourOrder": "How was your order?",
+  "reviewPleaseGiveYourRating": "Please give your rating",
+  "reviewHowWasYourExperience": "How was your experience?",
+  "reviewLeaveAComment": "Leave a Comment",
+  "reviewWhatDidYouLikeOrDislike": "What did you like or dislike?",
+  "reviewNext": "Next",
+  "reviewSubmitReview": "Submit Review",
+  "reviewYourReview": "Your Review",
+  "reviewNoReviewYet": "No review yet. Share your experience!",
+  "reviewReviewSubmitted": "Review submitted successfully!"
 }
 
 

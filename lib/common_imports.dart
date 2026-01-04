@@ -102,12 +102,14 @@ export 'package:foody/data/model/order_item/order_item.dart';
 export 'package:foody/data/model/payment/payment.dart';
 export 'package:foody/data/model/delivery/delivery.dart';
 export 'package:foody/data/model/driver/driver.dart';
+export 'package:foody/data/model/review/review.dart';
 export 'package:foody/data/repo/order_repo.dart';
 export 'package:foody/data/repo/order_item_repo.dart';
 export 'package:foody/data/repo/payment_repo.dart';
 export 'package:foody/data/repo/delivery_repo.dart';
 export 'package:foody/data/repo/driver_repo.dart';
 export 'package:foody/data/repo/cart_repo.dart';
+export 'package:foody/data/repo/review_repo.dart';
 
 // API Client
 export 'package:foody/core/data/remote/api_client.dart';

@@ -17,6 +17,8 @@ import 'package:foody/data/repo/menu_repo.dart';
 import 'package:foody/data/repo/payment_repo.dart';
 import 'package:foody/data/repo/delivery_repo.dart';
 import 'package:foody/data/repo/driver_repo.dart';
+import 'package:foody/data/repo/review_repo.dart';
+import 'package:foody/data/model/review/review.dart';
 
 /// Extended order item with menu details
 class OrderItemWithMenu {
@@ -37,6 +39,7 @@ class OrderDetails {
   final Payment? payment;
   final Delivery? delivery;
   final Driver? driver;
+  final Review? review;
 
   OrderDetails({
     required this.order,
@@ -45,7 +48,11 @@ class OrderDetails {
     this.payment,
     this.delivery,
     this.driver,
+    this.review,
   });
+
+  /// Check if order can be reviewed (completed and not already reviewed)
+  bool get canReview => order.orderStatus == OrderStatus.delivered && review == null;
 }
 
 /// View model for order details screen
@@ -57,6 +64,7 @@ class OrderDetailsViewModel extends BaseViewModel {
   final PaymentRepo _paymentRepo = getIt<PaymentRepo>();
   final DeliveryRepo _deliveryRepo = getIt<DeliveryRepo>();
   final DriverRepo _driverRepo = getIt<DriverRepo>();
+  final ReviewRepo _reviewRepo = getIt<ReviewRepo>();
 
   final ValueNotifier<ApiResponse<OrderDetails>> orderDetailsResponse =
       ValueNotifier(const ApiResponse.none());
@@ -127,6 +135,13 @@ class OrderDetailsViewModel extends BaseViewModel {
         driver = driverResponse.isSuccess ? driverResponse.getDataOrNull() : null;
       }
 
+      // Fetch review if order is delivered
+      Review? review;
+      if (order.orderStatus == OrderStatus.delivered) {
+        final reviewResponse = await _reviewRepo.getReviewByOrderId(orderId);
+        review = reviewResponse.isSuccess ? reviewResponse.getDataOrNull() : null;
+      }
+
       final orderDetails = OrderDetails(
         order: order,
         items: itemsWithMenu,
@@ -134,6 +149,7 @@ class OrderDetailsViewModel extends BaseViewModel {
         payment: payment,
         delivery: delivery,
         driver: driver,
+        review: review,
       );
 
       orderDetailsResponse.value = ApiResponse.success(orderDetails);
@@ -149,37 +165,42 @@ class OrderDetailsViewModel extends BaseViewModel {
     final order = orderDetails.order;
     final delivery = orderDetails.delivery;
 
-    // Step 0: Order Placed (pending)
-    if (order.orderStatus == OrderStatus.pending) {
-      return 0;
-    }
+    // Get effective order status (mapping delivery status to order status for display)
+    final effectiveStatus = _getEffectiveOrderStatus(order.orderStatus, delivery?.deliveryStatus);
 
-    // Step 1: Order Confirmed (confirmed)
-    if (order.orderStatus == OrderStatus.confirmed) {
-      return 1;
+    // Map status to step index
+    switch (effectiveStatus) {
+      case OrderStatus.pending:
+        return 0;
+      case OrderStatus.confirmed:
+        return 1;
+      case OrderStatus.preparing:
+        return 2;
+      case OrderStatus.onTheWay:
+        return 3;
+      case OrderStatus.delivered:
+        return 4;
+      case OrderStatus.canceled:
+        return 0; // Canceled orders show step 0
     }
+  }
 
-    // Step 2: Preparing (delivery assigned)
-    if (delivery != null && delivery.deliveryStatus == DeliveryStatus.assigned) {
-      return 2;
+  /// Get effective order status by mapping delivery status to order status
+  OrderStatus _getEffectiveOrderStatus(OrderStatus orderStatus, DeliveryStatus? deliveryStatus) {
+    // If order is confirmed and has delivery, map delivery status to order status
+    if (orderStatus == OrderStatus.confirmed && deliveryStatus != null) {
+      switch (deliveryStatus) {
+        case DeliveryStatus.assigned:
+          return OrderStatus.preparing;
+        case DeliveryStatus.onTheWay:
+          return OrderStatus.onTheWay;
+        case DeliveryStatus.delivered:
+          return OrderStatus.delivered;
+      }
     }
-
-    // Step 3: On The Way (delivery on_the_way)
-    if (delivery != null && delivery.deliveryStatus == DeliveryStatus.onTheWay) {
-      return 3;
-    }
-
-    // Step 4: Delivered (delivered)
-    if (order.orderStatus == OrderStatus.delivered) {
-      return 4;
-    }
-
-    // Canceled orders show step 0
-    if (order.orderStatus == OrderStatus.canceled) {
-      return 0;
-    }
-
-    return 0;
+    
+    // Otherwise return the order status as is
+    return orderStatus;
   }
 
   @override

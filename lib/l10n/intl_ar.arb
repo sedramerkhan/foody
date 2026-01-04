@@ -138,6 +138,17 @@
   "profilePaymentsAddedSuccessfully": "تم إضافة الدفعات بنجاح!",
   "checkoutPlacingOrder": "جاري تأكيد الطلب...",
   "thisFieldIsRequired": "This field is required",
-  "pleaseEnterAValidEmailAddress": "Please enter a valid email address"
+  "pleaseEnterAValidEmailAddress": "Please enter a valid email address",
+  "reviewLeaveAReview": "اترك تقييم",
+  "reviewHowWasYourOrder": "كيف كان طلبك؟",
+  "reviewPleaseGiveYourRating": "يرجى إعطاء تقييمك",
+  "reviewHowWasYourExperience": "كيف كانت تجربتك؟",
+  "reviewLeaveAComment": "اترك تعليق",
+  "reviewWhatDidYouLikeOrDislike": "ما الذي أعجبك أو لم يعجبك؟",
+  "reviewNext": "التالي",
+  "reviewSubmitReview": "إرسال التقييم",
+  "reviewYourReview": "تقييمك",
+  "reviewNoReviewYet": "لا يوجد تقييم بعد. شارك تجربتك!",
+  "reviewReviewSubmitted": "تم إرسال التقييم بنجاح!"
 }
 

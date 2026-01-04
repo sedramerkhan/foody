@@ -94,9 +94,11 @@ class OrdersViewModel extends BaseViewModel {
       final order = orderWithDelivery.order;
       final delivery = orderWithDelivery.delivery;
 
-      // Upcoming: pending, confirmed, or delivery status is on_the_way
+      // Upcoming: pending, confirmed, preparing, or on_the_way
       return order.orderStatus == OrderStatus.pending ||
           order.orderStatus == OrderStatus.confirmed ||
+          order.orderStatus == OrderStatus.preparing ||
+          order.orderStatus == OrderStatus.onTheWay ||
           (delivery != null && delivery.deliveryStatus == DeliveryStatus.onTheWay);
     }).toList();
   }
