@@ -180,6 +180,14 @@ flutter_gen:
     flutter_svg: true
 
 
+## Launcher Icons
+## note: flutter pub run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/logo.png"
+
 
 ## shortcut commands
 ## if rps it is not installed yet run this -> dart pub global activate rps
