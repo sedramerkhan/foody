@@ -31,7 +31,6 @@ class OrdersViewModel extends BaseViewModel {
 
   /// Load orders for current user
   Future<void> loadOrders() async {
-    notifyListeners();
     ordersResponse.value = const ApiResponse.loading();
 
     try {

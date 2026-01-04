@@ -11,6 +11,7 @@ class TryAgain extends StatelessWidget {
   final String? subMessage;
   final Function()? onTapButton;
   final Function()? onTapIcon;
+  final Widget? icon;
 
   const TryAgain({
     super.key,
@@ -18,6 +19,7 @@ class TryAgain extends StatelessWidget {
     this.onTapButton,
     this.onTapIcon,
     this.subMessage,
+    this.icon,
   });
 
   @override
@@ -26,6 +28,10 @@ class TryAgain extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (icon != null) ...[
+            icon!,
+            SizedBox(height: 16.h),
+          ],
           AppText(
             message,
             typography: AppTypography.bodyLargeMedium,
@@ -43,7 +49,7 @@ class TryAgain extends StatelessWidget {
           SizedBox(height: 30.h),
           if (onTapButton != null)
             PrimaryButton(
-              text: "Try Again",
+              text: S.current.commonTryAgain,
               onPressed: onTapButton,
               isLoading: false,
               width: 177.w,

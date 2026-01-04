@@ -68,23 +68,37 @@ class OrderDetailsViewModel extends BaseViewModel {
 
   final ValueNotifier<ApiResponse<OrderDetails>> orderDetailsResponse =
       ValueNotifier(const ApiResponse.none());
+  
+  bool _isDisposed = false;
+  String? _currentOrderId;
 
   /// Load order details
   Future<void> loadOrderDetails(String orderId) async {
+    if (_isDisposed) return;
+    
+    _currentOrderId = orderId;
     notifyListeners();
-    orderDetailsResponse.value = const ApiResponse.loading();
+    if (!_isDisposed) {
+      orderDetailsResponse.value = const ApiResponse.loading();
+    }
 
     try {
       // Fetch order
       final orderResponse = await _orderRepo.getOrder(orderId);
+      if (_isDisposed) return;
+      
       if (orderResponse.isFailure) {
-        orderDetailsResponse.value = orderResponse.mapData((_) => throw Exception('Order not found'));
+        if (!_isDisposed) {
+          orderDetailsResponse.value = orderResponse.mapData((_) => throw Exception('Order not found'));
+        }
         return;
       }
 
       final order = orderResponse.getDataOrNull();
       if (order == null) {
-        orderDetailsResponse.value = ApiResponse.failure(message: 'Order not found');
+        if (!_isDisposed) {
+          orderDetailsResponse.value = ApiResponse.failure(message: 'Order not found');
+        }
         return;
       }
 
@@ -138,9 +152,13 @@ class OrderDetailsViewModel extends BaseViewModel {
       // Fetch review if order is delivered
       Review? review;
       if (order.orderStatus == OrderStatus.delivered) {
+        if (_isDisposed) return;
         final reviewResponse = await _reviewRepo.getReviewByOrderId(orderId);
+        if (_isDisposed) return;
         review = reviewResponse.isSuccess ? reviewResponse.getDataOrNull() : null;
       }
+
+      if (_isDisposed) return;
 
       final orderDetails = OrderDetails(
         order: order,
@@ -152,11 +170,23 @@ class OrderDetailsViewModel extends BaseViewModel {
         review: review,
       );
 
-      orderDetailsResponse.value = ApiResponse.success(orderDetails);
+      if (!_isDisposed) {
+        orderDetailsResponse.value = ApiResponse.success(orderDetails);
+      }
     } catch (e) {
-      orderDetailsResponse.value = ApiResponse.failure(
-        message: 'Failed to load order details: ${e.toString()}',
-      );
+      if (!_isDisposed) {
+        orderDetailsResponse.value = ApiResponse.failure(
+          message: 'Failed to load order details: ${e.toString()}',
+        );
+      }
+    }
+  }
+
+  /// Refresh order details (for pull-to-refresh)
+  /// This keeps the current data visible while refreshing
+  Future<void> refreshOrderDetails() async {
+    if (_currentOrderId != null && !_isDisposed) {
+      await loadOrderDetails(_currentOrderId!);
     }
   }
 
@@ -205,6 +235,7 @@ class OrderDetailsViewModel extends BaseViewModel {
 
   @override
   void dispose() {
+    _isDisposed = true;
     orderDetailsResponse.dispose();
     super.dispose();
   }

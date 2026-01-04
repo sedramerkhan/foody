@@ -1,4 +1,5 @@
 import 'package:foody/common_imports.dart';
+import 'package:foody/core/api_response/no_data/try_again_widget.dart';
 import 'package:foody/presentation/order_details/order_details_view_model.dart';
 
 class OrderDetailsErrorState extends StatelessWidget {
@@ -13,35 +14,19 @@ class OrderDetailsErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = S.current;
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(24.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64.w,
-              color: AppColors.textSecondaryAlt,
-            ),
-            GapH(16.h),
-            AppText(
-              message,
-              typography: AppTypography.bodyMediumRegular,
-              color: AppColors.textPrimary,
-              textAlign: TextAlign.center,
-            ),
-            GapH(16.h),
-            PrimaryButton(
-              onPressed: () {
-                final viewModel = Provider.of<OrderDetailsViewModel>(context, listen: false);
-                viewModel.loadOrderDetails(orderId);
-              },
-              text: l10n.commonTryAgain,
-            ),
-          ],
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 200,
+      child: TryAgain(
+        message: message,
+        icon: Icon(
+          Icons.error_outline,
+          size: 64.w,
+          color: AppColors.textSecondaryAlt,
         ),
+        onTapButton: () {
+          final viewModel = Provider.of<OrderDetailsViewModel>(context, listen: false);
+          viewModel.loadOrderDetails(orderId);
+        },
       ),
     );
   }

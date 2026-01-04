@@ -34,19 +34,36 @@ class OrderDetailsScreen extends StatelessWidget {
         ),
         body: Consumer<OrderDetailsViewModel>(
           builder: (context, viewModel, _) {
-            return ApiResponseBuilder<OrderDetails>(
-              apiResponse: viewModel.orderDetailsResponse,
-              onSuccess: (orderDetails) => _buildOrderDetails(context, orderDetails, viewModel),
-              onError: (message) => OrderDetailsErrorState(
-                message: message,
-                orderId: orderId,
-              ),
-              loading: Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.iconBrand,
+            return RefreshIndicator(
+              onRefresh: () async {
+                await viewModel.refreshOrderDetails();
+              },
+              child: ApiResponseBuilder<OrderDetails>(
+                apiResponse: viewModel.orderDetailsResponse,
+                onSuccess: (orderDetails) => _buildOrderDetails(context, orderDetails, viewModel),
+                onError: (message) => SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: OrderDetailsErrorState(
+                    message: message,
+                    orderId: orderId,
+                  ),
+                ),
+                loading: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height - 200,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.iconBrand,
+                      ),
+                    ),
+                  ),
+                ),
+                empty: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: const OrderDetailsEmptyState(),
                 ),
               ),
-              empty: const OrderDetailsEmptyState(),
             );
           },
         ),
