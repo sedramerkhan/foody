@@ -8,39 +8,38 @@ class SignUpGradientHeader extends StatelessWidget {
     final l10n = S.current;
 
     return Container(
-      height: MediaQuery.heightOf(context) * .35,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.bgFillBrand,
-            AppColors.bgFillBrandAlt,
-          ],
+        height: MediaQuery.heightOf(context) * .2,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              AppColors.brand500,
+              AppColors.brand700,
+            ],
+          ),
         ),
-      ),
-      child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(24.w),
+          padding: EdgeInsets.symmetric(horizontal:24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppText(
                 l10n.signUpCreateAccount,
-                typography: AppTypography.headingLargeBold,
-                color: AppColors.textOnBrand,
+                typography: AppTypography.headingXLargeBold,
+                color: Colors.white,
               ),
-              GapH(8.h),
+              GapH(4.h),
               AppText(
                 l10n.signUpSignUpToContinue,
-                typography: AppTypography.bodyMediumRegular,
-                color: AppColors.textOnBrand,
+                typography: AppTypography.headingMediumBold,
+                color: Colors.white,
               ),
             ],
           ),
         ),
-      ),
     );
   }
 }

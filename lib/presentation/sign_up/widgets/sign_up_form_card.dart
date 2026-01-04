@@ -44,6 +44,7 @@ class SignUpFormCard extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
+        height: MediaQuery.heightOf(context) *.8,
         width: double.infinity,
         decoration: BoxDecoration(
           color: AppColors.bgSurface,
@@ -78,7 +79,7 @@ class SignUpFormCard extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                   ),
                 ),
-                GapH(16.h),
+                GapH(8.h),
                 /// Email field
                 LabeledTextField(
                   label: l10n.signUpEmail,
@@ -89,7 +90,7 @@ class SignUpFormCard extends StatelessWidget {
                     validator: emailValidator,
                   ),
                 ),
-                GapH(16.h),
+                GapH(8.h),
                 /// Phone field
                 LabeledTextField(
                   label: l10n.signUpPhone,
@@ -100,7 +101,7 @@ class SignUpFormCard extends StatelessWidget {
                     validator: phoneValidator,
                   ),
                 ),
-                GapH(16.h),
+                GapH(8.h),
                 /// Address field (optional)
                 LabeledTextField(
                   label: l10n.signUpAddress,
@@ -112,7 +113,7 @@ class SignUpFormCard extends StatelessWidget {
                     minLines: 2,
                   ),
                 ),
-                GapH(16.h),
+                GapH(8.h),
                 /// Password field
                 LabeledTextField(
                   label: l10n.signInPassword,
@@ -122,7 +123,7 @@ class SignUpFormCard extends StatelessWidget {
                     validator: passwordValidator,
                   ),
                 ),
-                GapH(16.h),
+                GapH(8.h),
                 /// Confirm Password field
                 LabeledTextField(
                   label: l10n.signUpConfirmPassword,

@@ -5,6 +5,7 @@ import 'package:foody/presentation/orders/orders_screen.dart';
 import 'package:foody/presentation/orders/orders_view_model.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
 import 'package:foody/presentation/profile/profile_view_model.dart';
+import 'package:foody/shared/utils/navigation/navigation_helpers.dart';
 import 'package:foody/shared/utils/navigation/view_model_provider.dart';
 import 'package:foody/shared/widgets/bottom_nav_bar/app_bottom_nav_bar.dart';
 import 'package:flutter_lazy_indexed_stack/flutter_lazy_indexed_stack.dart';
@@ -23,6 +24,13 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Check if we need to switch to a specific tab (e.g., after checkout)
+      final args = getRouteArgs(context);
+      final initialTab = args?['initialTab'] as int?;
+      if (initialTab != null && initialTab >= 0 && initialTab < 3) {
+        _currentNavBarIndex.value = initialTab;
+      }
+      
       final viewModel = Provider.of<HomeViewModel>(context, listen: false);
       viewModel.loadRestaurants();
     });

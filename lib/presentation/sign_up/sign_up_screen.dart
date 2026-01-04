@@ -59,13 +59,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> _handleSignUp(SignUpViewModel viewModel) async {
-    print('[SIGN_UP_SCREEN] Form validation started');
     if (_formKey.currentState?.validate() ?? false) {
-      print('[SIGN_UP_SCREEN] Form is valid, starting sign-up process');
-      print('[SIGN_UP_SCREEN] Username: ${_usernameController.text.trim()}');
-      print('[SIGN_UP_SCREEN] Email: ${_emailController.text.trim()}');
-      print('[SIGN_UP_SCREEN] Phone: ${_phoneController.text.trim()}');
-      print('[SIGN_UP_SCREEN] Address: ${_addressController.text.trim()}');
+
       
       final result = await viewModel.signUp(
         username: _usernameController.text.trim(),
@@ -75,28 +70,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         address: _addressController.text.trim(),
       );
 
-      print('[SIGN_UP_SCREEN] Sign-up result received: ${result.runtimeType}');
-      result.when(
-        success: (data) => print('[SIGN_UP_SCREEN] Success: $data'),
-        failure: (code, message) => print('[SIGN_UP_SCREEN] Failure: $code - $message'),
-        loading: () => print('[SIGN_UP_SCREEN] Still loading...'),
-        none: () => print('[SIGN_UP_SCREEN] None state'),
-      );
 
       if (!mounted) {
-        print('[SIGN_UP_SCREEN] Widget not mounted, returning');
         return;
       }
       ApiResponseHandler.handle(context: context, result: result, onSuccess: (_){
-        print('[SIGN_UP_SCREEN] Success handler called, navigating to main');
         if (!mounted) {
-          print('[SIGN_UP_SCREEN] Widget not mounted in success handler');
           return;
         }
-        NavigationUtils.pushReplacementNamed(context, Routes.main);
+        NavigationUtils.pushNamedAndRemoveUntil(context, Routes.main,(route)=> false);
       });
     } else {
-      print('[SIGN_UP_SCREEN] Form validation failed');
     }
   }
 

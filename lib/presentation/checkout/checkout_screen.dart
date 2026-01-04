@@ -171,8 +171,13 @@ class CheckoutScreen extends StatelessWidget {
                                     backgroundColor: Colors.green,
                                   ),
                                 );
-                                // Navigate to orders screen
-                                Navigator.of(context).pushReplacementNamed(Routes.orders);
+                                // Navigate to main screen on orders tab and clear cart/checkout from stack
+                                NavigationUtils.pushNamedAndRemoveUntil(
+                                  context,
+                                  Routes.main,
+                                  (route) => route.settings.name == Routes.main,
+                                  arguments: {'initialTab': 1}, // 1 = orders tab
+                                );
                               });
 
                             }
