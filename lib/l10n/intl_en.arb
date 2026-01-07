@@ -154,7 +154,8 @@
   "reviewSubmitReview": "Submit Review",
   "reviewYourReview": "Your Review",
   "reviewNoReviewYet": "No review yet. Share your experience!",
-  "reviewReviewSubmitted": "Review submitted successfully!"
+  "reviewReviewSubmitted": "Review submitted successfully!",
+  "commonPressAgainToExit": "Press again to exit"
 }
 
 

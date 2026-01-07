@@ -43,6 +43,11 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+/// Restart the entire app by forcing MyApp to rebuild
+void restartApp() {
+  _MyAppState.restartApp();
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -51,6 +56,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  static _MyAppState? _instance;
+  int _restartCounter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _instance = this;
+  }
+
+  @override
+  void dispose() {
+    _instance = null;
+    super.dispose();
+  }
+
+  void restart() {
+    setState(() {
+      _restartCounter++;
+    });
+  }
+
+  static void restartApp() {
+    _instance?.restart();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -77,7 +107,7 @@ class _MyAppState extends State<MyApp> {
           );
           
           return MaterialApp(
-            key: ValueKey('${appConfig.currentLanguageCode}_${appConfig.themeModeString}'), // Force rebuild on language/theme change
+            key: ValueKey('${appConfig.currentLanguageCode}_${appConfig.themeModeString}_$_restartCounter'), // Force rebuild on language/theme change or restart
             title: 'Foody',
             theme: defaultThemeData,
             darkTheme: darkThemeData,

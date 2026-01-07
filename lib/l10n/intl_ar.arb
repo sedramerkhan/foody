@@ -154,6 +154,7 @@
   "reviewSubmitReview": "إرسال التقييم",
   "reviewYourReview": "تقييمك",
   "reviewNoReviewYet": "لا يوجد تقييم بعد. شارك تجربتك!",
-  "reviewReviewSubmitted": "تم إرسال التقييم بنجاح!"
+  "reviewReviewSubmitted": "تم إرسال التقييم بنجاح!",
+  "commonPressAgainToExit": "اضغط مرة أخرى للخروج"
 }
 
