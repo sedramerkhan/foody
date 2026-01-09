@@ -11,6 +11,7 @@ import 'package:foody/presentation/order_details/order_details_screen.dart';
 import 'package:foody/presentation/order_details/order_details_view_model.dart';
 import 'package:foody/presentation/profile/profile_screen.dart';
 import 'package:foody/presentation/profile/profile_view_model.dart';
+import 'package:foody/presentation/settings/settings_screen.dart';
 import 'package:foody/presentation/sign_in/sign_in_screen.dart';
 import 'package:foody/presentation/sign_in/sign_in_view_model.dart';
 import 'package:foody/presentation/sign_up/sign_up_screen.dart';
@@ -112,6 +113,15 @@ class AppRouter {
             createViewModel: () => ProfileViewModel(),
             arguments: arguments,
             child: const ProfileScreen(),
+          ),
+          settings: settings,
+        );
+      case Routes.settings:
+        return CustomPageRoute(
+          page: provideViewModel<ProfileViewModel>(
+            createViewModel: () => ProfileViewModel(),
+            arguments: arguments,
+            child: const SettingsScreen(),
           ),
           settings: settings,
         );

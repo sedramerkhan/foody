@@ -2,7 +2,6 @@ import 'package:foody/common_imports.dart';
 import 'package:foody/main.dart';
 import 'package:foody/presentation/profile/profile_view_model.dart';
 import 'package:foody/shared/widgets/app_bar/custom_app_bar.dart';
-import 'package:foody/shared/widgets/buttons/buttons.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -123,7 +122,6 @@ class ProfileScreen extends StatelessWidget {
                             isSelected: AppConfig().themeModeString == 'light',
                             onPressed: () async {
                               await AppConfig().setThemeMode('light');
-                              // Restart app to apply theme change
                               restartApp();
                             },
                           ),
@@ -136,7 +134,6 @@ class ProfileScreen extends StatelessWidget {
                             isSelected: AppConfig().themeModeString == 'dark',
                             onPressed: () async {
                               await AppConfig().setThemeMode('dark');
-                              // Restart app to apply theme change
                               restartApp();
                             },
                           ),
@@ -149,7 +146,6 @@ class ProfileScreen extends StatelessWidget {
                             isSelected: AppConfig().themeModeString == 'system',
                             onPressed: () async {
                               await AppConfig().setThemeMode('system');
-                              // Restart app to apply theme change
                               restartApp();
                             },
                           ),
