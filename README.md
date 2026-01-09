@@ -177,6 +177,27 @@ flutter run
 - Check Firebase project configuration
 - Ensure Realtime Database rules are properly configured
 
+--- 
+
+## Screenshots
+<table>
+  <tr>
+    <td><img width="200" alt="sing_up" src="https://github.com/user-attachments/assets/418451b2-c40c-47e8-bf89-d67177073fa7" /></td>
+    <td><img width="200" alt="sign_in" src="https://github.com/user-attachments/assets/1d4272cd-98d3-49c0-88ea-06878e4d2ce4" /></td>
+    <td><img width="200" alt="order_details" src="https://github.com/user-attachments/assets/38f7d4fa-e803-45b9-8bc9-c11f55a2edd6" /></td>
+    <td><img width="200" alt="orders" src="https://github.com/user-attachments/assets/f2265390-4583-40a9-9759-509cc7674d2b" /></td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <td><img width="200" alt="menu" src="https://github.com/user-attachments/assets/5e6b5c67-e2a3-4a30-abf7-98fcd24fcf93" /></td>
+    <td><img width="200" alt="cart" src="https://github.com/user-attachments/assets/b96dfee9-fc7c-441f-b95e-b915b5a88ffd" /></td>
+    <td><img width="200" alt="resturant_light" src="https://github.com/user-attachments/assets/00577c8a-80b6-4e24-991f-434f9ceb1960" /></td>
+    <td><img width="200" alt="resturants_dark" src="https://github.com/user-attachments/assets/3010ddef-0fec-47b2-9332-cac87c526afe" /></td>
+  </tr>
+</table>
 
 
 ---
