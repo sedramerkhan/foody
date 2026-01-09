@@ -16,8 +16,25 @@ class ProfileScreen extends StatelessWidget {
         title: l10n.profileProfile,
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed(Routes.signIn);
+            onPressed: () async {
+              // Sign out from Firebase Auth and clear user data
+              final response = await viewModel.signOut();
+              
+              if (context.mounted) {
+                if (response.isSuccess) {
+                  // Navigate to sign in screen after successful sign out
+                  Navigator.of(context).pushReplacementNamed(Routes.signIn);
+                } else {
+                  // Show error message if sign out failed
+                  final failure = response as Failure;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(failure.message),
+                      backgroundColor: AppColors.bgFillError,
+                    ),
+                  );
+                }
+              }
             },
             child: AppText(
               l10n.homeSignOut,

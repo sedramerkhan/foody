@@ -7,6 +7,8 @@ import 'package:foody/data/repo/restaurant_repo.dart';
 import 'package:foody/data/repo/menu_repo.dart';
 import 'package:foody/data/repo/driver_repo.dart';
 import 'package:foody/data/repo/payment_repo.dart';
+import 'package:foody/data/repo/auth_repo.dart';
+import 'package:foody/data/local/app_local_data.dart';
 
 /// View model for profile screen
 class ProfileViewModel extends BaseViewModel {
@@ -14,6 +16,8 @@ class ProfileViewModel extends BaseViewModel {
   final MenuRepo _menuRepo = MenuRepo();
   final DriverRepo _driverRepo = getIt<DriverRepo>();
   final PaymentRepo _paymentRepo = getIt<PaymentRepo>();
+  final AuthRepo _authRepo = AuthRepo();
+  final AppLocalData _appLocalData = getIt<AppLocalData>();
 
   final ValueNotifier<ApiResponse<void>> addRestaurantsResponse =
       ValueNotifier(const ApiResponse.none());
@@ -58,6 +62,22 @@ class ProfileViewModel extends BaseViewModel {
     addDriversResponse.value = response;
   }
 
+  /// Sign out the current user
+  /// This will:
+  /// 1. Sign out from Firebase Auth
+  /// 2. Clear user data from local storage
+  /// 3. Clear cart data
+  Future<ApiResponse<void>> signOut() async {
+    // Sign out from Firebase Auth and clear user data
+    final response = await _authRepo.signOut();
+    
+    // Clear cart data on successful sign out
+    if (response.isSuccess) {
+      await _appLocalData.clearCart();
+    }
+    
+    return response;
+  }
 
   @override
   void dispose() {
