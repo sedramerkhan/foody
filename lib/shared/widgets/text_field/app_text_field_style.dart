@@ -47,7 +47,7 @@ class AppTextFieldStyle {
       contentPadding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 12.h),
       textStyle: ThemeTextStyle.fromTypography(
         typography: AppTypography.bodyMediumMedium,
-        color: AppColors.black,
+        color: AppColors.textPrimaryAlt,
       ).materialTextStyle,
       hintStyle: null, // Use theme default
       cursorColor: AppColors.brand600,
@@ -71,7 +71,7 @@ class AppTextFieldStyle {
       contentPadding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 12.h),
       textStyle: ThemeTextStyle.fromTypography(
         typography: AppTypography.bodyMediumMedium,
-        color: AppColors.black,
+        color: AppColors.textPrimaryAlt,
       ).materialTextStyle,
       cursorColor: AppColors.brand600,
       prefixIcon: prefixIcon,
@@ -92,7 +92,7 @@ class AppTextFieldStyle {
       contentPadding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 12.h),
       textStyle: ThemeTextStyle.fromTypography(
         typography: AppTypography.bodyMediumMedium,
-        color: AppColors.black,
+        color: AppColors.textPrimaryAlt,
       ).materialTextStyle,
       cursorColor: AppColors.brand600,
       prefixIcon: prefixIcon,
